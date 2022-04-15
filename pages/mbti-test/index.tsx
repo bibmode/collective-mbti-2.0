@@ -16,6 +16,7 @@ const SelfTest = () => {
   const [answers, setAnswers] = useState<string[] | []>(
     new Array(64).fill(null)
   );
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -25,7 +26,6 @@ const SelfTest = () => {
   }, []);
 
   const handleChoice = (answer: string, questionIndex: number) => {
-    console.log(questionIndex, questionPage);
     const newAnswers = answers.map((item, index) => {
       return questionIndex === index + 8 * questionPage ? answer : item;
     });
@@ -34,8 +34,6 @@ const SelfTest = () => {
   };
 
   const getColor = (index: number, prefix: string) => {
-    // console.log(index);
-    // console.log(answers[index + 8 * questionPage]);
     switch (index) {
       case 0:
         return `${prefix}red-500`;
@@ -54,8 +52,15 @@ const SelfTest = () => {
     }
   };
 
+  const updateProgress = () => {
+    const answeredLength = answers.filter((answer) => answer !== null).length;
+    const percentage = Math.round((answeredLength / 64) * 100);
+    setProgress(percentage);
+  };
+
   useEffect(() => {
-    console.log(answers);
+    // progress
+    updateProgress();
   }, [answers]);
 
   return (
@@ -140,20 +145,20 @@ const SelfTest = () => {
         </div>
 
         {/* progress bar */}
-        <div className="flex items-center mt-14 mb-8 w-full max-w-screen-lg">
+        <div className="flex items-center mt-14 bg-white py-6 mb-8 w-full max-w-screen-lg sticky top-0 z-10">
           <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
             <div
-              className="h-4 bg-transparent clip-background rounded-full"
-              style={{ width: "30%" }}
+              className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
+              style={{ width: `${progress}%` }}
             >
               <div className="h-4 w-full absolute left-0 top-0 clip-background rounded-full bg-rainbow" />
             </div>
           </div>
 
-          <p className="font-semibold">30%</p>
+          <p className="font-semibold">{progress}%</p>
         </div>
 
-        <h1 className="uppercase font-bold text-xl text-center">
+        <h1 className="uppercase font-bold text-xl text-center md:my-5">
           which sounds more like you?
         </h1>
 
@@ -161,7 +166,7 @@ const SelfTest = () => {
         {questions
           ? questions[questionPage]?.map((item: Option[], index) => (
               <div
-                className="flex flex-col md:flex-row items-center text-center px-6 py-8 mb-4 md:my-3 w-full max-w-screen-lg bg-white drop-shadow-lg rounded-3xl md:py-12"
+                className="flex flex-col md:flex-row items-center text-center px-6 py-8 mb-4 md:my-4 w-full max-w-screen-lg bg-white drop-shadow-lg rounded-3xl md:py-12"
                 key={`question-${questionPage}-${index}`}
               >
                 <label className="text-[15px] md:w-6/12 md:pr-8 md:text-lg hover:cursor-pointer">
@@ -226,6 +231,16 @@ const SelfTest = () => {
               </div>
             ))
           : null}
+
+        {/* quiz navigation buttons */}
+        <div className="flex my-8">
+          <button className="h-12 w-12 rounded-full bg-gray-800 flex items-center justify-center text-3xl text-white">
+            <Icon icon="ic:round-navigate-before" />
+          </button>
+          <button className="h-12 w-12 ml-6 rounded-full bg-gray-800 flex items-center justify-center text-3xl text-white">
+            <Icon icon="ic:round-navigate-next" />
+          </button>
+        </div>
       </main>
     </div>
   );
