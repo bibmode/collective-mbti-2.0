@@ -34,7 +34,7 @@ const SelfTest = () => {
   };
 
   const getColor = (index: number, prefix: string) => {
-    console.log(index);
+    // console.log(index);
     // console.log(answers[index + 8 * questionPage]);
     switch (index) {
       case 0:
@@ -51,8 +51,6 @@ const SelfTest = () => {
         return `${prefix}indigo-500`;
       case 6:
         return `${prefix}violet-500`;
-      default:
-        return `${prefix}red-400`;
     }
   };
 
@@ -178,14 +176,25 @@ const SelfTest = () => {
                       )
                     }
                   />
-                  <span className={`${getColor(index, "peer-checked:text-")}`}>
+                  <span
+                    className={`${
+                      index !== 7
+                        ? getColor(index, "peer-checked:text-")
+                        : "peer-checked:text-fuchsia-500"
+                    }`}
+                  >
                     {item[0].statement}
                   </span>
                 </label>
 
                 <div
-                  className={`my-3 md:my-0 border border-gray-900 w-11 md:w-16 h-11 md:h-16 md:text-xl uppercase flex items-center justify-center rounded-full ${
-                    answers[index + 8 * questionPage] && getColor(index, "bg-")
+                  className={`border border-gray-900 w-11  md:w-16 h-11 md:h-16 md:px-1 my-3 md:my-0 uppercase flex items-center justify-center rounded-full ${
+                    index !== 7
+                      ? answers[index + 8 * questionPage] &&
+                        getColor(index, "bg-")
+                      : answers[index + 8 * questionPage] && "bg-fuchsia-500"
+                  } ${
+                    answers[index + 8 * questionPage] && "border-0 text-white"
                   }`}
                 >
                   <p>or</p>
@@ -204,7 +213,13 @@ const SelfTest = () => {
                       )
                     }
                   />
-                  <span className={`${getColor(index, "peer-checked:text-")}`}>
+                  <span
+                    className={`${
+                      index !== 7
+                        ? getColor(index, "peer-checked:text-")
+                        : "peer-checked:text-fuchsia-500"
+                    }`}
+                  >
                     {item[1].statement}
                   </span>
                 </label>
