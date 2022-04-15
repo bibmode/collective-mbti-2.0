@@ -7,7 +7,7 @@ import greenCube from "../public/index-images/green-cube.svg";
 import purpleShape from "../public/index-images/purple-dodecahedron.svg";
 import screenshot from "../public/index-images/screenshot-desktop.png";
 import avatar from "../public/avatars/casual-life-3d-avatar-with-person-in-glasses-and-orange-shirt.png";
-import Typology from "../components/Typology";
+import TypologyExample from "../components/TypologyExample";
 import Traits from "../components/Traits";
 
 const sampleResult = [
@@ -213,7 +213,7 @@ const Home = () => {
 
           {/* friend sample */}
           <div className="absolute -right-[31%] top-28">
-            <Typology results={sampleResult} avatar={avatar} />
+            <TypologyExample results={sampleResult} avatar={avatar} />
           </div>
 
           {/* traits sample */}
