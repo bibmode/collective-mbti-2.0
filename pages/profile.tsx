@@ -88,7 +88,7 @@ const ProfilePage = () => {
     <div>
       <main className="container max-w-screen-xl text-gray-800">
         {/* nav bar */}
-        <nav className="flex items-center justify-between py-8 md:mb-12">
+        <nav className="flex items-center justify-between py-8 lg:pt-12 md:mb-12">
           <div className="flex items-center">
             <Image src="/logo.svg" alt="logo" width="50" height="50" />
             <h1 className="uppercase font-bold text-[21px] w-28 leading-tight ml-3">

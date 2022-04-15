@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .clip-background {
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+  }
+
+  .bg-rainbow {
+    background: linear-gradient(
+      90deg,
+      #ed2f2f -1.36%,
+      #ff8d07 19.23%,
+      #fff73d 39.82%,
+      #46c84b 60.41%,
+      #2f80ed 76.24%,
+      #ab47bc 88.39%,
+      #d25ace 100%
+    );
+  }
+}
