@@ -2,12 +2,69 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+import { selfQuestions } from "../../data/selftest-questions";
+import testShuffle from "../../utils/testShuffle";
+
+type Option = {
+  cognitiveFunction: string;
+  statement: string;
+};
+
 const SelfTest = () => {
+  const [questionPage, setQuestionPage] = useState<number>(0);
+  const [questions, setQuestions] = useState<Option[][][] | null>(null);
+  const [answers, setAnswers] = useState<string[] | []>(
+    new Array(64).fill(null)
+  );
+
+  useEffect(() => {
+    const questionsStart: Option[][][] = testShuffle({
+      questionnaire: selfQuestions,
+    });
+    setQuestions(questionsStart);
+  }, []);
+
+  const handleChoice = (answer: string, questionIndex: number) => {
+    console.log(questionIndex, questionPage);
+    const newAnswers = answers.map((item, index) => {
+      return questionIndex === index + 8 * questionPage ? answer : item;
+    });
+
+    setAnswers(newAnswers);
+  };
+
+  const getColor = (index: number, prefix: string) => {
+    console.log(index);
+    // console.log(answers[index + 8 * questionPage]);
+    switch (index) {
+      case 0:
+        return `${prefix}red-500`;
+      case 1:
+        return `${prefix}orange-500`;
+      case 2:
+        return `${prefix}yellow-400`;
+      case 3:
+        return `${prefix}emerald-500`;
+      case 4:
+        return `${prefix}blue-500`;
+      case 5:
+        return `${prefix}indigo-500`;
+      case 6:
+        return `${prefix}violet-500`;
+      default:
+        return `${prefix}red-400`;
+    }
+  };
+
+  useEffect(() => {
+    console.log(answers);
+  }, [answers]);
+
   return (
     <div>
-      <main className="container max-w-screen-xl text-gray-700">
+      <main className="container flex flex-col items-center max-w-screen-xl text-gray-700 pb-12">
         {/* nav bar */}
-        <nav className="flex items-center justify-between py-8 lg:pt-12 md:mb-12">
+        <nav className="flex items-center w-full justify-between py-8 lg:pt-12 md:mb-12">
           <div className="flex items-center">
             <Image src="/logo.svg" alt="logo" width="50" height="50" />
             <h1 className="uppercase font-bold text-[21px] w-28 leading-tight ml-3">
@@ -52,7 +109,7 @@ const SelfTest = () => {
         </nav>
 
         {/* guidelines */}
-        <div className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg">
+        <div className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg max-w-[691px]">
           <h2 className="text-center text-lg mb-2 font-semibold">
             Guidelines for this test
           </h2>
@@ -85,8 +142,8 @@ const SelfTest = () => {
         </div>
 
         {/* progress bar */}
-        <div className="flex items-center">
-          <div className="relative w-full h-4 bg-gray-100 rounded-full my-12 mr-3">
+        <div className="flex items-center mt-14 mb-8 w-full max-w-screen-lg">
+          <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
             <div
               className="h-4 bg-transparent clip-background rounded-full"
               style={{ width: "30%" }}
@@ -97,6 +154,63 @@ const SelfTest = () => {
 
           <p className="font-semibold">30%</p>
         </div>
+
+        <h1 className="uppercase font-bold text-xl text-center">
+          which sounds more like you?
+        </h1>
+
+        {/* questions */}
+        {questions
+          ? questions[questionPage]?.map((item: Option[], index) => (
+              <div
+                className="flex flex-col md:flex-row items-center text-center px-6 py-8 mb-4 md:my-3 w-full max-w-screen-lg bg-white drop-shadow-lg rounded-3xl md:py-12"
+                key={`question-${questionPage}-${index}`}
+              >
+                <label className="text-[15px] md:w-6/12 md:pr-8 md:text-lg hover:cursor-pointer">
+                  <input
+                    type="radio"
+                    name={`item-${index}-${questionPage}`}
+                    className="peer hidden"
+                    onChange={() =>
+                      handleChoice(
+                        item[0].cognitiveFunction,
+                        index + 8 * questionPage
+                      )
+                    }
+                  />
+                  <span className={`${getColor(index, "peer-checked:text-")}`}>
+                    {item[0].statement}
+                  </span>
+                </label>
+
+                <div
+                  className={`my-3 md:my-0 border border-gray-900 w-11 md:w-16 h-11 md:h-16 md:text-xl uppercase flex items-center justify-center rounded-full ${
+                    answers[index + 8 * questionPage] && getColor(index, "bg-")
+                  }`}
+                >
+                  <p>or</p>
+                </div>
+
+                <label className="text-[15px] md:w-6/12 md:pl-8 md:text-lg hover:cursor-pointer">
+                  <input
+                    type="radio"
+                    name={`item-${index}-${questionPage}`}
+                    value={item[1].cognitiveFunction}
+                    className="peer hidden"
+                    onChange={() =>
+                      handleChoice(
+                        item[1].cognitiveFunction,
+                        index + 8 * questionPage
+                      )
+                    }
+                  />
+                  <span className={`${getColor(index, "peer-checked:text-")}`}>
+                    {item[1].statement}
+                  </span>
+                </label>
+              </div>
+            ))
+          : null}
       </main>
     </div>
   );
