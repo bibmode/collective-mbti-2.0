@@ -33,23 +33,8 @@ const SelfTest = () => {
     setAnswers(newAnswers);
   };
 
-  const getColor = (index: number, prefix: string) => {
-    switch (index) {
-      case 0:
-        return `${prefix}red-500`;
-      case 1:
-        return `${prefix}orange-500`;
-      case 2:
-        return `${prefix}yellow-400`;
-      case 3:
-        return `${prefix}emerald-500`;
-      case 4:
-        return `${prefix}blue-500`;
-      case 5:
-        return `${prefix}indigo-500`;
-      case 6:
-        return `${prefix}violet-500`;
-    }
+  const getColor = (index: number) => {
+    return `text-${index}`;
   };
 
   const updateProgress = () => {
@@ -60,6 +45,7 @@ const SelfTest = () => {
 
   useEffect(() => {
     // progress
+    console.log(answers);
     updateProgress();
   }, [answers]);
 
@@ -183,8 +169,20 @@ const SelfTest = () => {
                   />
                   <span
                     className={`${
-                      index !== 7
-                        ? getColor(index, "peer-checked:text-")
+                      index === 0
+                        ? "peer-checked:text-red-500"
+                        : index === 1
+                        ? "peer-checked:text-orange-500"
+                        : index === 2
+                        ? "peer-checked:text-yellow-500"
+                        : index === 3
+                        ? "peer-checked:text-green-500"
+                        : index === 4
+                        ? "peer-checked:text-blue-500"
+                        : index === 5
+                        ? "peer-checked:text-indigo-500"
+                        : index === 6
+                        ? "peer-checked:text-violet-500"
                         : "peer-checked:text-fuchsia-500"
                     }`}
                   >
@@ -194,10 +192,23 @@ const SelfTest = () => {
 
                 <div
                   className={`border border-gray-900 w-11  md:w-16 h-11 md:h-16 md:px-1 my-3 md:my-0 uppercase flex items-center justify-center rounded-full ${
-                    index !== 7
-                      ? answers[index + 8 * questionPage] &&
-                        getColor(index, "bg-")
-                      : answers[index + 8 * questionPage] && "bg-fuchsia-500"
+                    index === 0 && answers[index + 8 * questionPage]
+                      ? "bg-red-500"
+                      : index === 1 && answers[index + 8 * questionPage]
+                      ? "bg-orange-500"
+                      : index === 2 && answers[index + 8 * questionPage]
+                      ? "bg-yellow-500"
+                      : index === 3 && answers[index + 8 * questionPage]
+                      ? "bg-green-500"
+                      : index === 4 && answers[index + 8 * questionPage]
+                      ? "bg-blue-500"
+                      : index === 5 && answers[index + 8 * questionPage]
+                      ? "bg-indigo-500"
+                      : index === 6 && answers[index + 8 * questionPage]
+                      ? "bg-violet-500"
+                      : index === 7 &&
+                        answers[index + 8 * questionPage] &&
+                        "bg-fuchsia-500"
                   } ${
                     answers[index + 8 * questionPage] && "border-0 text-white"
                   }`}
@@ -220,8 +231,20 @@ const SelfTest = () => {
                   />
                   <span
                     className={`${
-                      index !== 7
-                        ? getColor(index, "peer-checked:text-")
+                      index === 0
+                        ? "peer-checked:text-red-500"
+                        : index === 1
+                        ? "peer-checked:text-orange-500"
+                        : index === 2
+                        ? "peer-checked:text-yellow-500"
+                        : index === 3
+                        ? "peer-checked:text-green-500"
+                        : index === 4
+                        ? "peer-checked:text-blue-500"
+                        : index === 5
+                        ? "peer-checked:text-indigo-500"
+                        : index === 6
+                        ? "peer-checked:text-violet-500"
                         : "peer-checked:text-fuchsia-500"
                     }`}
                   >
