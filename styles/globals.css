@@ -22,36 +22,6 @@
   }
 }
 
-@layer components {
-  .text-0 {
-    @apply peer-checked:text-red-500;
-  }
-
-  .text-1 {
-    @apply peer-checked:text-orange-500;
-  }
-
-  .text-2 {
-    @apply peer-checked:text-yellow-500;
-  }
-
-  .text-3 {
-    @apply peer-checked:text-emerald-500;
-  }
-
-  .text-4 {
-    @apply peer-checked:text-blue-500;
-  }
-
-  .text-5 {
-    @apply peer-checked:text-indigo-500;
-  }
-
-  .text-6 {
-    @apply peer-checked:text-violet-500;
-  }
-
-  .text-7 {
-    @apply peer-checked:text-fuchsia-500;
-  }
+html {
+  scroll-behavior: smooth;
 }

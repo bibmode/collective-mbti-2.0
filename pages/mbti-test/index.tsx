@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { selfQuestions } from "../../data/selftest-questions";
 import testShuffle from "../../utils/testShuffle";
@@ -11,9 +11,13 @@ type Option = {
 };
 
 const SelfTest = () => {
+  const myRef = useRef<HTMLInputElement>(null);
   const [questionPage, setQuestionPage] = useState<number>(0);
   const [questions, setQuestions] = useState<Option[][][] | null>(null);
   const [answers, setAnswers] = useState<string[] | []>(
+    new Array(64).fill(null)
+  );
+  const [answerColors, setAnswerColors] = useState<number[] | []>(
     new Array(64).fill(null)
   );
   const [progress, setProgress] = useState(0);
@@ -25,22 +29,41 @@ const SelfTest = () => {
     setQuestions(questionsStart);
   }, []);
 
-  const handleChoice = (answer: string, questionIndex: number) => {
+  const scrollToTop = () => {
+    if (myRef.current) window.scrollTo(0, myRef.current.offsetTop - 100);
+  };
+
+  const handleChoice = (
+    answer: string,
+    questionIndex: number,
+    optionIndex: number
+  ) => {
+    const positionInArray = questionIndex + 8 * questionPage;
+
     const newAnswers = answers.map((item, index) => {
-      return questionIndex === index + 8 * questionPage ? answer : item;
+      return positionInArray === index ? answer : item;
+    });
+
+    const newAnswerColors = answerColors.map((item, index) => {
+      return positionInArray === index ? optionIndex : item;
     });
 
     setAnswers(newAnswers);
-  };
-
-  const getColor = (index: number) => {
-    return `text-${index}`;
+    setAnswerColors(newAnswerColors);
   };
 
   const updateProgress = () => {
     const answeredLength = answers.filter((answer) => answer !== null).length;
     const percentage = Math.round((answeredLength / 64) * 100);
     setProgress(percentage);
+  };
+
+  const quizNavigator = (direction: boolean) => {
+    if (direction) {
+      setQuestionPage(questionPage + 1);
+    } else {
+      setQuestionPage(questionPage - 1);
+    }
   };
 
   useEffect(() => {
@@ -131,22 +154,26 @@ const SelfTest = () => {
         </div>
 
         {/* progress bar */}
-        <div className="flex items-center mt-14 bg-white py-6 mb-8 w-full max-w-screen-lg sticky top-0 z-10">
-          <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
-            <div
-              className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
-              style={{ width: `${progress}%` }}
-            >
-              <div className="h-4 w-full absolute left-0 top-0 clip-background rounded-full bg-rainbow" />
+        <div className="mt-14 flex justify-center bg-white/70 backdrop-blur-sm py-6 mb-8 w-full sticky top-0 z-10">
+          <div className="w-full max-w-screen-lg flex items-center ">
+            <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
+              <div
+                className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
+                style={{ width: `${progress}%` }}
+              >
+                <div className="h-4 w-full absolute left-0 top-0 clip-background rounded-full bg-rainbow" />
+              </div>
             </div>
-          </div>
 
-          <p className="font-semibold">{progress}%</p>
+            <p className="font-semibold">{progress}%</p>
+          </div>
         </div>
 
-        <h1 className="uppercase font-bold text-xl text-center md:my-5">
-          which sounds more like you?
-        </h1>
+        <div ref={myRef}>
+          <h1 className="uppercase font-bold text-xl text-center md:my-5">
+            which sounds more like you?
+          </h1>
+        </div>
 
         {/* questions */}
         {questions
@@ -159,31 +186,36 @@ const SelfTest = () => {
                   <input
                     type="radio"
                     name={`item-${index}-${questionPage}`}
+                    id={`item-${index}-${questionPage}-1`}
+                    checked={
+                      answerColors[index + 8 * questionPage] === 1
+                        ? true
+                        : false
+                    }
                     className="peer hidden"
                     onChange={() =>
-                      handleChoice(
-                        item[0].cognitiveFunction,
-                        index + 8 * questionPage
-                      )
+                      handleChoice(item[0].cognitiveFunction, index, 1)
                     }
                   />
                   <span
                     className={`${
-                      index === 0
+                      index === 0 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-red-500"
-                        : index === 1
+                        : index === 1 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-orange-500"
-                        : index === 2
+                        : index === 2 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-yellow-500"
-                        : index === 3
+                        : index === 3 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-green-500"
-                        : index === 4
+                        : index === 4 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-blue-500"
-                        : index === 5
+                        : index === 5 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-indigo-500"
-                        : index === 6
+                        : index === 6 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-violet-500"
-                        : "peer-checked:text-fuchsia-500"
+                        : index === 7 &&
+                          answers[index + 8 * questionPage] &&
+                          "peer-checked:text-fuchsia-500"
                     }`}
                   >
                     {item[0].statement}
@@ -220,32 +252,37 @@ const SelfTest = () => {
                   <input
                     type="radio"
                     name={`item-${index}-${questionPage}`}
+                    id={`item-${index}-${questionPage}-2`}
+                    checked={
+                      answerColors[index + 8 * questionPage] === 2
+                        ? true
+                        : false
+                    }
                     value={item[1].cognitiveFunction}
                     className="peer hidden"
                     onChange={() =>
-                      handleChoice(
-                        item[1].cognitiveFunction,
-                        index + 8 * questionPage
-                      )
+                      handleChoice(item[1].cognitiveFunction, index, 2)
                     }
                   />
                   <span
                     className={`${
-                      index === 0
+                      index === 0 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-red-500"
-                        : index === 1
+                        : index === 1 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-orange-500"
-                        : index === 2
+                        : index === 2 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-yellow-500"
-                        : index === 3
+                        : index === 3 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-green-500"
-                        : index === 4
+                        : index === 4 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-blue-500"
-                        : index === 5
+                        : index === 5 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-indigo-500"
-                        : index === 6
+                        : index === 6 && answers[index + 8 * questionPage]
                         ? "peer-checked:text-violet-500"
-                        : "peer-checked:text-fuchsia-500"
+                        : index === 7 &&
+                          answers[index + 8 * questionPage] &&
+                          "peer-checked:text-fuchsia-500"
                     }`}
                   >
                     {item[1].statement}
@@ -257,10 +294,21 @@ const SelfTest = () => {
 
         {/* quiz navigation buttons */}
         <div className="flex my-8">
-          <button className="h-12 w-12 rounded-full bg-gray-800 flex items-center justify-center text-3xl text-white">
+          <button
+            onClick={() => quizNavigator(false)}
+            disabled={questionPage === 0 ? true : false}
+            className="h-12 w-12 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
+          >
             <Icon icon="ic:round-navigate-before" />
           </button>
-          <button className="h-12 w-12 ml-6 rounded-full bg-gray-800 flex items-center justify-center text-3xl text-white">
+          <button
+            onClick={() => {
+              quizNavigator(true);
+              scrollToTop();
+            }}
+            disabled={questionPage === 7 ? true : false}
+            className="h-12 w-12 ml-6 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
+          >
             <Icon icon="ic:round-navigate-next" />
           </button>
         </div>
