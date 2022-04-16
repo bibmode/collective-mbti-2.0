@@ -29,9 +29,25 @@ const SelfTest = () => {
     setQuestions(questionsStart);
   }, []);
 
+  const checkBeforeNavigating = () => {
+    const expectedNumberOfAnswers = 8 * (questionPage + 1);
+    const answersLen = answers.filter((answer) => answer !== null).length;
+
+    return expectedNumberOfAnswers <= answersLen;
+  };
+
   const scrollToTop = () => {
     if (myRef.current) window.scrollTo(0, myRef.current.offsetTop - 100);
   };
+
+  const checkIfAllItemsAreAnswered = () => {
+    const answersLen = answers.filter((answer) => answer === null).length;
+    return answersLen !== 0;
+  };
+
+  useLayoutEffect(() => {
+    scrollToTop();
+  }, [questionPage]);
 
   const handleChoice = (
     answer: string,
@@ -68,9 +84,12 @@ const SelfTest = () => {
 
   useEffect(() => {
     // progress
-    console.log(answers);
     updateProgress();
   }, [answers]);
+
+  const submitAnswers = () => {
+    console.log(answers);
+  };
 
   return (
     <div>
@@ -156,6 +175,9 @@ const SelfTest = () => {
         {/* progress bar */}
         <div className="mt-14 flex justify-center bg-white/70 backdrop-blur-sm py-6 mb-8 w-full sticky top-0 z-10">
           <div className="w-full max-w-screen-lg flex items-center ">
+            <p className="font-semibold text-xs w-14">
+              Page {questionPage + 1}
+            </p>
             <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
               <div
                 className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
@@ -229,7 +251,7 @@ const SelfTest = () => {
                       : index === 1 && answers[index + 8 * questionPage]
                       ? "bg-orange-500"
                       : index === 2 && answers[index + 8 * questionPage]
-                      ? "bg-yellow-500"
+                      ? "bg-yellow-400"
                       : index === 3 && answers[index + 8 * questionPage]
                       ? "bg-green-500"
                       : index === 4 && answers[index + 8 * questionPage]
@@ -301,16 +323,25 @@ const SelfTest = () => {
           >
             <Icon icon="ic:round-navigate-before" />
           </button>
-          <button
-            onClick={() => {
-              quizNavigator(true);
-              scrollToTop();
-            }}
-            disabled={questionPage === 7 ? true : false}
-            className="h-12 w-12 ml-6 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
-          >
-            <Icon icon="ic:round-navigate-next" />
-          </button>
+
+          {questionPage !== 7 || checkIfAllItemsAreAnswered() ? (
+            <button
+              onClick={() => quizNavigator(true)}
+              disabled={
+                questionPage === 7 || !checkBeforeNavigating() ? true : false
+              }
+              className="h-12 w-12 ml-6 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
+            >
+              <Icon icon="ic:round-navigate-next" />
+            </button>
+          ) : (
+            <button
+              onClick={() => submitAnswers()}
+              className="h-12 w-12 ml-6 rounded-full bg-green-500 hover:bg-green-700 flex items-center justify-center text-3xl text-white"
+            >
+              <Icon icon="bi:check" />
+            </button>
+          )}
         </div>
       </main>
     </div>
