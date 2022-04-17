@@ -175,9 +175,7 @@ const SelfTest = () => {
         {/* progress bar */}
         <div className="mt-14 flex justify-center bg-white/70 backdrop-blur-sm py-6 mb-8 w-full sticky top-0 z-10">
           <div className="w-full max-w-screen-lg flex items-center ">
-            <p className="font-semibold text-xs w-14">
-              Page {questionPage + 1}
-            </p>
+            <p className="font-semibold mr-3">{questionPage + 1}/8</p>
             <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
               <div
                 className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
