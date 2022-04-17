@@ -36,7 +36,7 @@ const CircularProgressBar = ({ color, finalValue }: Props) => {
       />
 
       <div className="absolute flex items-center justify-center top-0 h-full w-full">
-        <h3 className="font-bold text-lg" style={{ color }}>
+        <h3 className="font-bold text-md" style={{ color }}>
           {value}%
         </h3>
       </div>

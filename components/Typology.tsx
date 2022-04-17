@@ -1,30 +1,43 @@
 import Image, { StaticImageData } from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import CircularProgressBar from "./CircularProgressBar";
 type Result = {
   cognitiveFunc: string;
   level: number;
   color: string;
 };
 
+type Letter = {
+  letter: string;
+  level: number;
+  color: string;
+};
+
 type Props = {
   results: Result[];
+  letterResults: Letter[];
   avatar: StaticImageData;
   name: string;
   relationship: string;
   mbtiType: string;
   comment: string;
   date: string;
+  indicator: string;
 };
 
 const Typology = ({
   results,
+  letterResults,
   avatar,
   name,
   relationship,
   mbtiType,
   comment,
   date,
+  indicator,
 }: Props) => {
+  const [resultNavigation, setResultNavigation] = useState<number>(1);
+
   return (
     <div className="flex flex-col items-center drop-shadow-xl top-0 border-2 border-white rounded-3xl bg-white backdrop-blur-[63px] py-12 px-6 mb-8 md:px-9 lg:flex-row">
       {/* user details */}
@@ -59,14 +72,15 @@ const Typology = ({
       </div>
 
       {/* sample result */}
-      <div className="w-full md:pl-10">
-        <div className="text-xs text-gray-700 font-semibold flex justify-center pt-3 pb-4">
+      <div className="w-full h-full md:pl-10">
+        <div className="text-xs text-gray-700 font-semibold flex justify-center pt-3 lg:pt-0 pb-4">
           <label>
             <input
               type="radio"
-              name="result-option-1"
-              id="result-option-1"
+              name={`result-option-${indicator}-1`}
+              id={`result-option-${indicator}-1`}
               className="hidden"
+              onChange={() => setResultNavigation(1)}
             />
             <span className="uppercase pr-3 border-r border-gray-300">
               cognitive function
@@ -75,32 +89,50 @@ const Typology = ({
           <label>
             <input
               type="radio"
-              name="result-option-1"
-              id="result-option-1"
+              name={`result-option-${indicator}-1`}
+              id={`result-option-${indicator}-1`}
               className="hidden"
+              onChange={() => setResultNavigation(0)}
             />
             <span className="uppercase pl-3">4 letters</span>
           </label>
         </div>
 
-        {results.map((result, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center font-semibold text-[14px] text-gray-600"
-          >
-            <p className="w-[30px]">{result.cognitiveFunc}</p>
-            <div className="self-center mx-4 h-[8px] w-full bg-gray-200/70 rounded-lg">
-              <div
-                className={`h-[8px]  rounded-lg`}
-                style={{
-                  width: `${result.level}%`,
-                  backgroundColor: result.color,
-                }}
-              />
+        {/* cognitive functions result */}
+        {resultNavigation ? (
+          results.map((result, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center font-semibold text-[14px] text-gray-600"
+            >
+              <p className="w-[30px]">{result.cognitiveFunc}</p>
+              <div className="self-center mx-4 h-[8px] w-full bg-gray-200/70 rounded-lg">
+                <div
+                  className={`h-[8px]  rounded-lg`}
+                  style={{
+                    width: `${result.level}%`,
+                    backgroundColor: result.color,
+                  }}
+                />
+              </div>
+              <p className="w-11">{result.level}%</p>
             </div>
-            <p className="w-11">{result.level}%</p>
+          ))
+        ) : (
+          <div className="grid grid-cols-2 gap-y-8 mb-8">
+            {letterResults.map((result, index) => (
+              <div key={index} className="relative w-20 h-20 place-self-center">
+                <CircularProgressBar
+                  color={result.color}
+                  finalValue={result.level}
+                />
+                <p className="text-center font-medium text-gray-500">
+                  {result.letter}
+                </p>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

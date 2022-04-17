@@ -8,6 +8,7 @@ import avatar4 from "../../public/avatars/casual-life-3d-avatar-with-woman-in-bl
 
 import { inviteQuestions } from "../../data/invite-questions";
 import testShuffle from "../../utils/testShuffle";
+import NavBar from "../../components/NavBar";
 
 type Option = {
   cognitiveFunction: string;
@@ -108,51 +109,12 @@ const InviteTest = () => {
 
   return (
     <div>
-      <main className="container relative flex flex-col items-center max-w-screen-xl text-gray-700 pb-12">
+      <main className="container flex flex-col items-center max-w-screen-xl text-gray-700 pb-12">
         {/* nav bar */}
-        <nav className="flex items-center w-full justify-between py-8 lg:pt-12 md:mb-12">
-          <div className="flex items-center">
-            <Image src="/logo.svg" alt="logo" width="50" height="50" />
-            <h1 className="uppercase font-bold text-[21px] w-28 leading-tight ml-3">
-              collective mbti
-            </h1>
-          </div>
-
-          {/* mobile hamburger button */}
-          <label className="text-5xl -mt-3 md:hidden">
-            <input
-              className="hidden"
-              type="checkbox"
-              name="hamburger-menu"
-              id="hamburger-menu"
-            />
-            <Icon icon="heroicons-outline:menu-alt-3" />
-          </label>
-
-          {/* desktop page title menu */}
-          <div className="hidden md:block text-3xl font-semibold">
-            <span className="text-blue-600">M</span>
-            <span className="text-yellow-400">B</span>
-            <span className="text-red-600">T</span>
-            <span className="text-green-600 mr-2">I</span>
-            TEST
-          </div>
-
-          {/* profile button */}
-          <div className="hidden md:flex items-center">
-            <p className="text-[15px] max-w-[100px] mr-3 text-right leading-tight font-semibold text-gray-700">
-              GENEVIEVE NAVALES
-            </p>
-            <button className="relative border-2 border-gray-800 h-12 w-12 rounded-full overflow-hidden">
-              <Image
-                src="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
-                alt="user image"
-                layout="fill"
-                objectFit="cover"
-              />
-            </button>
-          </div>
-        </nav>
+        <NavBar
+          image="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
+          navType={false}
+        />
 
         {/* form fill up */}
         <div className="flex flex-col md:flex-row max-w-screen-lg w-full text-gray-600">
@@ -172,12 +134,12 @@ const InviteTest = () => {
             />
 
             {/* relationship */}
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-4 flex items-center justify-between flex-wrap">
               <label htmlFor="relationship">
-                <p className="w-36">Your relationship?</p>
+                <p className="w-36 my-2">Your relationship?</p>
               </label>
 
-              <div className="inline-block relative w-64">
+              <div className="relative w-fit">
                 <select className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline">
                   <option value="volvo">Friend</option>
                   <option value="saab">Romantic</option>
@@ -191,10 +153,10 @@ const InviteTest = () => {
             </div>
 
             {/* avatar */}
-            <div className="mt-2">
+            <div className="mt-4 md:mt-2">
               <p>Choose an avatar:</p>
 
-              <div className="flex justify-center mt-2">
+              <div className="flex justify-center mt-2 flex-wrap">
                 {/* available avatars */}
                 <div
                   key="avatar-0"
@@ -209,7 +171,7 @@ const InviteTest = () => {
                   />
                   <label
                     htmlFor="contactChoice-0"
-                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full overflow-hidden"
+                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full cursor-pointer overflow-hidden"
                   >
                     <Image
                       src="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
@@ -233,7 +195,7 @@ const InviteTest = () => {
                   />
                   <label
                     htmlFor="contactChoice-1"
-                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full"
+                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full cursor-pointer"
                   >
                     <Image
                       src={avatar1}
@@ -257,7 +219,7 @@ const InviteTest = () => {
                   />
                   <label
                     htmlFor="contactChoice-2"
-                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full"
+                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full cursor-pointer"
                   >
                     <Image
                       src={avatar2}
@@ -281,7 +243,7 @@ const InviteTest = () => {
                   />
                   <label
                     htmlFor="contactChoice-3"
-                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full"
+                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full cursor-pointer"
                   >
                     <Image
                       src={avatar3}
@@ -305,7 +267,7 @@ const InviteTest = () => {
                   />
                   <label
                     htmlFor="contactChoice-4"
-                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full"
+                    className="peer-checked:border-4 border-blue-700 w-full h-full absolute rounded-full cursor-pointer"
                   >
                     <Image
                       src={avatar4}
@@ -353,184 +315,186 @@ const InviteTest = () => {
           </div>
         </div>
 
-        {/* overlay */}
-        {overlay && (
-          <div className="w-full backdrop-blur-sm bg-gradient-to-b bg-white/60 absolute top-[60vh] h-[85%] md:h-[75%] z-30 ">
-            <h2 className="text-gray-500 py-10 text-lg font-semibold flex items-center justify-center">
-              Please fill up your details to proceed
-              <span className="ml-2">
-                <Icon icon="akar-icons:arrow-down" />
-              </span>
-            </h2>
-          </div>
-        )}
-
-        {/* progress bar */}
-        <div className="mt-14 flex justify-center bg-white/70 backdrop-blur-sm py-6 mb-8 w-full sticky top-0 z-10">
-          <div className="w-full max-w-screen-lg flex items-center ">
-            <p className="font-semibold mr-3">{questionPage + 1}/8</p>
-            <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
-              <div
-                className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
-                style={{ width: `${progress}%` }}
-              >
-                <div className="h-4 w-full absolute left-0 top-0 clip-background rounded-full bg-rainbow" />
-              </div>
+        <div className="relative flex flex-col items-center h-fit">
+          {/* overlay */}
+          {overlay && (
+            <div className="w-[110%] backdrop-blur-sm bg-gradient-to-b bg-white/60 absolute top-14 h-full z-30 ">
+              <h2 className="text-gray-500 py-16 text-lg font-semibold flex items-center justify-center">
+                Please fill up your details to proceed
+                <span className="ml-2">
+                  <Icon icon="akar-icons:arrow-down" />
+                </span>
+              </h2>
             </div>
-
-            <p className="font-semibold">{progress}%</p>
-          </div>
-        </div>
-
-        <div ref={myRef}>
-          <h1 className="uppercase font-bold text-xl text-center md:my-5">
-            which sounds more like Genevieve?
-          </h1>
-        </div>
-
-        {/* questions */}
-        {questions
-          ? questions[questionPage]?.map((item: Option[], index) => (
-              <div
-                className="flex flex-col md:flex-row items-center text-center px-6 py-8 mb-4 md:my-4 w-full max-w-screen-lg bg-white drop-shadow-lg rounded-3xl md:py-12"
-                key={`question-${questionPage}-${index}`}
-              >
-                <label className="text-[15px] md:w-6/12 md:pr-8 md:text-lg hover:cursor-pointer">
-                  <input
-                    type="radio"
-                    name={`item-${index}-${questionPage}`}
-                    checked={
-                      answerColors[index + 8 * questionPage] === 1
-                        ? true
-                        : false
-                    }
-                    className="peer hidden"
-                    onChange={() =>
-                      handleChoice(item[0].cognitiveFunction, index, 1)
-                    }
-                  />
-                  <span
-                    className={`${
-                      index === 0 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-red-500"
-                        : index === 1 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-orange-500"
-                        : index === 2 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-yellow-500"
-                        : index === 3 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-green-500"
-                        : index === 4 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-blue-500"
-                        : index === 5 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-indigo-500"
-                        : index === 6 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-violet-500"
-                        : index === 7 &&
-                          answers[index + 8 * questionPage] &&
-                          "peer-checked:text-fuchsia-500"
-                    }`}
-                  >
-                    {item[0].statement}
-                  </span>
-                </label>
-
-                <div
-                  className={`border border-gray-900 w-11  md:w-16 h-11 md:h-16 md:px-1 my-3 md:my-0 uppercase flex items-center justify-center rounded-full ${
-                    index === 0 && answers[index + 8 * questionPage]
-                      ? "bg-red-500"
-                      : index === 1 && answers[index + 8 * questionPage]
-                      ? "bg-orange-500"
-                      : index === 2 && answers[index + 8 * questionPage]
-                      ? "bg-yellow-400"
-                      : index === 3 && answers[index + 8 * questionPage]
-                      ? "bg-green-500"
-                      : index === 4 && answers[index + 8 * questionPage]
-                      ? "bg-blue-500"
-                      : index === 5 && answers[index + 8 * questionPage]
-                      ? "bg-indigo-500"
-                      : index === 6 && answers[index + 8 * questionPage]
-                      ? "bg-violet-500"
-                      : index === 7 &&
-                        answers[index + 8 * questionPage] &&
-                        "bg-fuchsia-500"
-                  } ${
-                    answers[index + 8 * questionPage] && "border-0 text-white"
-                  }`}
-                >
-                  <p>or</p>
-                </div>
-
-                <label className="text-[15px] md:w-6/12 md:pl-8 md:text-lg hover:cursor-pointer">
-                  <input
-                    type="radio"
-                    name={`item-${index}-${questionPage}`}
-                    checked={
-                      answerColors[index + 8 * questionPage] === 2
-                        ? true
-                        : false
-                    }
-                    value={item[1].cognitiveFunction}
-                    className="peer hidden"
-                    onChange={() =>
-                      handleChoice(item[1].cognitiveFunction, index, 2)
-                    }
-                  />
-                  <span
-                    className={`${
-                      index === 0 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-red-500"
-                        : index === 1 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-orange-500"
-                        : index === 2 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-yellow-500"
-                        : index === 3 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-green-500"
-                        : index === 4 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-blue-500"
-                        : index === 5 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-indigo-500"
-                        : index === 6 && answers[index + 8 * questionPage]
-                        ? "peer-checked:text-violet-500"
-                        : index === 7 &&
-                          answers[index + 8 * questionPage] &&
-                          "peer-checked:text-fuchsia-500"
-                    }`}
-                  >
-                    {item[1].statement}
-                  </span>
-                </label>
-              </div>
-            ))
-          : null}
-
-        {/* quiz navigation buttons */}
-        <div className="flex my-8">
-          <button
-            onClick={() => quizNavigator(false)}
-            disabled={questionPage === 0 ? true : false}
-            className="h-12 w-12 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
-          >
-            <Icon icon="ic:round-navigate-before" />
-          </button>
-
-          {questionPage !== 7 || checkIfAllItemsAreAnswered() ? (
-            <button
-              onClick={() => quizNavigator(true)}
-              disabled={
-                questionPage === 7 || !checkBeforeNavigating() ? true : false
-              }
-              className="h-12 w-12 ml-6 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
-            >
-              <Icon icon="ic:round-navigate-next" />
-            </button>
-          ) : (
-            <button
-              onClick={() => submitAnswers()}
-              className="h-12 w-12 ml-6 rounded-full bg-green-500 hover:bg-green-700 flex items-center justify-center text-3xl text-white"
-            >
-              <Icon icon="bi:check" />
-            </button>
           )}
+
+          {/* progress bar */}
+          <div className="mt-14 flex justify-center bg-white/70 backdrop-blur-sm py-6 mb-8 w-full sticky top-0 z-10">
+            <div className="w-full max-w-screen-lg flex items-center ">
+              <p className="font-semibold mr-3">{questionPage + 1}/8</p>
+              <div className="relative w-full h-4 bg-gray-100 rounded-full mr-3">
+                <div
+                  className="h-4 bg-transparent clip-background rounded-full transition-all ease-in-out duration-300"
+                  style={{ width: `${progress}%` }}
+                >
+                  <div className="h-4 w-full absolute left-0 top-0 clip-background rounded-full bg-rainbow" />
+                </div>
+              </div>
+
+              <p className="font-semibold">{progress}%</p>
+            </div>
+          </div>
+
+          <div ref={myRef}>
+            <h1 className="uppercase font-bold text-xl text-center md:my-5">
+              which sounds more like Genevieve?
+            </h1>
+          </div>
+
+          {/* questions */}
+          {questions
+            ? questions[questionPage]?.map((item: Option[], index) => (
+                <div
+                  className="flex flex-col md:flex-row items-center text-center px-6 py-8 mb-4 md:my-4 w-full max-w-screen-lg bg-white drop-shadow-lg rounded-3xl md:py-12"
+                  key={`question-${questionPage}-${index}`}
+                >
+                  <label className="text-[15px] md:w-6/12 md:pr-8 md:text-lg hover:cursor-pointer">
+                    <input
+                      type="radio"
+                      name={`item-${index}-${questionPage}`}
+                      checked={
+                        answerColors[index + 8 * questionPage] === 1
+                          ? true
+                          : false
+                      }
+                      className="peer hidden"
+                      onChange={() =>
+                        handleChoice(item[0].cognitiveFunction, index, 1)
+                      }
+                    />
+                    <span
+                      className={`${
+                        index === 0 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-red-500"
+                          : index === 1 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-orange-500"
+                          : index === 2 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-yellow-500"
+                          : index === 3 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-green-500"
+                          : index === 4 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-blue-500"
+                          : index === 5 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-indigo-500"
+                          : index === 6 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-violet-500"
+                          : index === 7 &&
+                            answers[index + 8 * questionPage] &&
+                            "peer-checked:text-fuchsia-500"
+                      }`}
+                    >
+                      {item[0].statement}
+                    </span>
+                  </label>
+
+                  <div
+                    className={`border border-gray-900 w-11  md:w-16 h-11 md:h-16 md:px-1 my-3 md:my-0 uppercase flex items-center justify-center rounded-full ${
+                      index === 0 && answers[index + 8 * questionPage]
+                        ? "bg-red-500"
+                        : index === 1 && answers[index + 8 * questionPage]
+                        ? "bg-orange-500"
+                        : index === 2 && answers[index + 8 * questionPage]
+                        ? "bg-yellow-400"
+                        : index === 3 && answers[index + 8 * questionPage]
+                        ? "bg-green-500"
+                        : index === 4 && answers[index + 8 * questionPage]
+                        ? "bg-blue-500"
+                        : index === 5 && answers[index + 8 * questionPage]
+                        ? "bg-indigo-500"
+                        : index === 6 && answers[index + 8 * questionPage]
+                        ? "bg-violet-500"
+                        : index === 7 &&
+                          answers[index + 8 * questionPage] &&
+                          "bg-fuchsia-500"
+                    } ${
+                      answers[index + 8 * questionPage] && "border-0 text-white"
+                    }`}
+                  >
+                    <p>or</p>
+                  </div>
+
+                  <label className="text-[15px] md:w-6/12 md:pl-8 md:text-lg hover:cursor-pointer">
+                    <input
+                      type="radio"
+                      name={`item-${index}-${questionPage}`}
+                      checked={
+                        answerColors[index + 8 * questionPage] === 2
+                          ? true
+                          : false
+                      }
+                      value={item[1].cognitiveFunction}
+                      className="peer hidden"
+                      onChange={() =>
+                        handleChoice(item[1].cognitiveFunction, index, 2)
+                      }
+                    />
+                    <span
+                      className={`${
+                        index === 0 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-red-500"
+                          : index === 1 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-orange-500"
+                          : index === 2 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-yellow-500"
+                          : index === 3 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-green-500"
+                          : index === 4 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-blue-500"
+                          : index === 5 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-indigo-500"
+                          : index === 6 && answers[index + 8 * questionPage]
+                          ? "peer-checked:text-violet-500"
+                          : index === 7 &&
+                            answers[index + 8 * questionPage] &&
+                            "peer-checked:text-fuchsia-500"
+                      }`}
+                    >
+                      {item[1].statement}
+                    </span>
+                  </label>
+                </div>
+              ))
+            : null}
+
+          {/* quiz navigation buttons */}
+          <div className="flex my-8">
+            <button
+              onClick={() => quizNavigator(false)}
+              disabled={questionPage === 0 ? true : false}
+              className="h-12 w-12 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
+            >
+              <Icon icon="ic:round-navigate-before" />
+            </button>
+
+            {questionPage !== 7 || checkIfAllItemsAreAnswered() ? (
+              <button
+                onClick={() => quizNavigator(true)}
+                disabled={
+                  questionPage === 7 || !checkBeforeNavigating() ? true : false
+                }
+                className="h-12 w-12 ml-6 rounded-full bg-gray-800 disabled:bg-gray-200 flex items-center justify-center text-3xl text-white"
+              >
+                <Icon icon="ic:round-navigate-next" />
+              </button>
+            ) : (
+              <button
+                onClick={() => submitAnswers()}
+                className="h-12 w-12 ml-6 rounded-full bg-green-500 hover:bg-green-700 flex items-center justify-center text-3xl text-white"
+              >
+                <Icon icon="bi:check" />
+              </button>
+            )}
+          </div>
         </div>
       </main>
     </div>

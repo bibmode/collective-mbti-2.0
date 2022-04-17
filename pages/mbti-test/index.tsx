@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import NavBar from "../../components/NavBar";
 
 import { selfQuestions } from "../../data/selftest-questions";
 import testShuffle from "../../utils/testShuffle";
@@ -95,49 +96,10 @@ const SelfTest = () => {
     <div>
       <main className="container flex flex-col items-center max-w-screen-xl text-gray-700 pb-12">
         {/* nav bar */}
-        <nav className="flex items-center w-full justify-between py-8 lg:pt-12 md:mb-12">
-          <div className="flex items-center">
-            <Image src="/logo.svg" alt="logo" width="50" height="50" />
-            <h1 className="uppercase font-bold text-[21px] w-28 leading-tight ml-3">
-              collective mbti
-            </h1>
-          </div>
-
-          {/* mobile hamburger button */}
-          <label className="text-5xl -mt-3 md:hidden">
-            <input
-              className="hidden"
-              type="checkbox"
-              name="hamburger-menu"
-              id="hamburger-menu"
-            />
-            <Icon icon="heroicons-outline:menu-alt-3" />
-          </label>
-
-          {/* desktop page title menu */}
-          <div className="hidden md:block text-3xl font-semibold">
-            <span className="text-blue-600">M</span>
-            <span className="text-yellow-400">B</span>
-            <span className="text-red-600">T</span>
-            <span className="text-green-600 mr-2">I</span>
-            TEST
-          </div>
-
-          {/* profile button */}
-          <div className="hidden md:flex items-center">
-            <p className="text-[15px] max-w-[100px] mr-3 text-right leading-tight font-semibold text-gray-700">
-              GENEVIEVE NAVALES
-            </p>
-            <button className="relative border-2 border-gray-800 h-12 w-12 rounded-full overflow-hidden">
-              <Image
-                src="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
-                alt="user image"
-                layout="fill"
-                objectFit="cover"
-              />
-            </button>
-          </div>
-        </nav>
+        <NavBar
+          image="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
+          navType={false}
+        />
 
         {/* guidelines */}
         <div className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg max-w-[691px]">

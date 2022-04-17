@@ -63,7 +63,11 @@ const cognitiveFunctionResult = [
   },
 ];
 
-const Results = () => {
+type Props = {
+  indicator: string;
+};
+
+const Results = ({ indicator }: Props) => {
   const [resultOption, setResultOption] = useState(1);
 
   const optionStyle = (optionValue: number) => {
@@ -98,13 +102,13 @@ const Results = () => {
           <input
             className="hidden"
             type="radio"
-            id="result1"
+            id={`result-${indicator}-1`}
             name="resultOption"
             onChange={() => setResultOption(1)}
             defaultChecked
           />
           <label
-            htmlFor="result1"
+            htmlFor={`result-${indicator}-1`}
             className={`uppercase py-4 pl-7 pr-2 grow ${optionStyle(1)}`}
           >
             accumulative result
@@ -113,12 +117,12 @@ const Results = () => {
           <input
             className="hidden"
             type="radio"
-            id="result2"
+            id={`result-${indicator}-2`}
             name="resultOption"
             onChange={() => setResultOption(2)}
           />
           <label
-            htmlFor="result2"
+            htmlFor={`result-${indicator}-2`}
             className={`border-x border-gray-200 uppercase py-4 px-2 grow ${optionStyle(
               2
             )}`}
@@ -129,12 +133,12 @@ const Results = () => {
           <input
             className="hidden"
             type="radio"
-            id="result3"
+            id={`result-${indicator}-3`}
             name="resultOption"
             onChange={() => setResultOption(3)}
           />
           <label
-            htmlFor="result3"
+            htmlFor={`result-${indicator}-3`}
             className={`uppercase py-4 pl-2 pr-6 grow ${optionStyle(3)}`}
           >
             self-tested result
