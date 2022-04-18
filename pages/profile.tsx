@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { LayoutContext } from "../components/context/LayoutContext";
 import NavBar from "../components/NavBar";
 import Results from "../components/Results";
 import Traits from "../components/Traits";
@@ -98,10 +99,15 @@ const sampleResultLetters = [
 ];
 
 const ProfilePage = () => {
+  const { profileMenu, setProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
   const handleChange = (valueChoice: boolean) => {
     setSectionChoice(valueChoice);
+  };
+
+  const closeProfileMenu = () => {
+    if (profileMenu) setProfileMenu(false);
   };
 
   useEffect(() => {
@@ -109,7 +115,7 @@ const ProfilePage = () => {
   }, [sectionChoice]);
 
   return (
-    <div>
+    <div onClick={closeProfileMenu}>
       <main className="container max-w-screen-xl text-gray-800">
         {/* nav bar */}
         <NavBar

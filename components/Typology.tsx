@@ -73,28 +73,31 @@ const Typology = ({
 
       {/* sample result */}
       <div className="w-full h-full md:pl-10">
-        <div className="text-xs text-gray-700 font-semibold flex justify-center pt-3 lg:pt-0 pb-4">
-          <label>
+        <div className="text-xs text-gray-400 font-semibold flex justify-center pt-3 lg:pt-0 pb-4">
+          <label className="cursor-pointer">
             <input
               type="radio"
               name={`result-option-${indicator}-1`}
               id={`result-option-${indicator}-1`}
-              className="hidden"
+              className="peer hidden"
               onChange={() => setResultNavigation(1)}
+              defaultChecked
             />
-            <span className="uppercase pr-3 border-r border-gray-300">
+            <span className="peer-checked:text-gray-700 uppercase pr-3 border-r border-gray-300">
               cognitive function
             </span>
           </label>
-          <label>
+          <label className="cursor-pointer">
             <input
               type="radio"
               name={`result-option-${indicator}-1`}
               id={`result-option-${indicator}-1`}
-              className="hidden"
+              className="peer hidden"
               onChange={() => setResultNavigation(0)}
             />
-            <span className="uppercase pl-3">4 letters</span>
+            <span className="peer-checked:text-gray-700 uppercase pl-3">
+              4 letters
+            </span>
           </label>
         </div>
 

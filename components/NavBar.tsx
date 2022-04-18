@@ -1,19 +1,34 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { LayoutContext } from "./context/LayoutContext";
+import ProfileMenu from "./ProfileMenu";
+
 type Props = {
   image: string;
   navType: boolean;
 };
 const NavBar = ({ image, navType }: Props) => {
-  const [inviteModal, setInviteModal] = useState<boolean>(false);
+  const { setInviteModal, profileMenu, setProfileMenu, setPhoneMenu } =
+    useContext(LayoutContext);
 
   const toggleInvite = () => {
-    setInviteModal(!inviteModal);
+    setInviteModal(true);
+  };
+
+  const openProfileMenu = () => {
+    setProfileMenu(true);
+  };
+
+  const openPhoneMenu = () => {
+    setPhoneMenu(true);
   };
 
   return (
-    <nav className="flex items-center w-full justify-between py-8 lg:pt-12 md:mb-12">
+    <nav className="flex relative items-center w-full justify-between py-8 lg:pt-12 md:mb-12">
+      {/* profile menu for desktop */}
+      {profileMenu && <ProfileMenu />}
+
       <div className="flex items-center">
         <Image src="/logo.svg" alt="logo" width="50" height="50" />
         <h1 className="uppercase font-bold text-[21px] w-28 leading-tight ml-3">
@@ -22,12 +37,13 @@ const NavBar = ({ image, navType }: Props) => {
       </div>
 
       {/* mobile hamburger button */}
-      <label className="text-5xl -mt-3 md:hidden">
+      <label className="text-4xl -mt-5 md:hidden">
         <input
           className="hidden"
           type="checkbox"
           name="hamburger-menu"
           id="hamburger-menu"
+          onChange={openPhoneMenu}
         />
         <Icon icon="heroicons-outline:menu-alt-3" />
       </label>
@@ -60,21 +76,12 @@ const NavBar = ({ image, navType }: Props) => {
         <p className="text-[15px] max-w-[100px] mr-3 text-right leading-tight font-semibold text-gray-700">
           GENEVIEVE NAVALES
         </p>
-        <button className="relative border-2 border-gray-800 h-12 w-12 rounded-full overflow-hidden">
+        <button
+          onClick={openProfileMenu}
+          className="relative border-2 border-gray-800 h-12 w-12 rounded-full overflow-hidden"
+        >
           <Image src={image} alt="user image" layout="fill" objectFit="cover" />
         </button>
-      </div>
-
-      {/* invite modal */}
-      <div className="absolute top-28 left-[50%] -translate-x-[50%] w-full max-w-xs px-4 py-2 bg-gray-400 flex">
-        {/* <input
-          className="text-sm"
-          type="text"
-          name="inviteModal"
-          id="inviteModal"
-          placeholder="http://localhost:3000/mbti-test/sdgdsj223d"
-          readOnly
-        /> */}
       </div>
     </nav>
   );
