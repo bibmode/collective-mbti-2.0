@@ -114,7 +114,7 @@ const ProfilePage = () => {
     <div onClick={closeProfileMenu} className="relative overflow-x-hidden">
       <main className="container max-w-screen-xl text-gray-800 ">
         {/* blob */}
-        <div className="absolute hidden lg:block -top-12 -right-[20%] xl:-right-8 scale-105 -z-10 opacity-60">
+        <div className="absolute hidden lg:block -top-24 -right-[20%] 2xl:-right-[5%] scale-105 -z-10 opacity-60">
           <div className="absolute top-12 right-0 bg-green-300 rounded-full w-[600px] h-[100px] blur-3xl " />
           <div className="absolute top-24 right-8 -rotate-15 bg-blue-300 rounded-full w-[600px] h-[150px] blur-3xl " />
           <div className="absolute top-32 right-0 bg-fuchsia-300 rounded-full w-[500px] h-[200px] blur-3xl " />

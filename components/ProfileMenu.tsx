@@ -4,7 +4,7 @@ import React, { useContext, useLayoutEffect, useRef } from "react";
 import { LayoutContext } from "./context/LayoutContext";
 
 const ProfileMenu = () => {
-  const { setEditModal } = useContext(LayoutContext);
+  const { setEditModal, setProfileMenu } = useContext(LayoutContext);
 
   const handleLogout = () => {};
 
@@ -12,8 +12,15 @@ const ProfileMenu = () => {
     setEditModal(true);
   };
 
+  const closeProfileMenu = () => {
+    setProfileMenu(false);
+  };
+
   return (
-    <div className="absolute z-50 right-0 top-[85%] bg-white drop-shadow-lg rounded-xl overflow-hidden">
+    <div
+      className="absolute z-50 right-0 top-[85%] bg-white drop-shadow-lg rounded-xl overflow-hidden"
+      onMouseLeave={closeProfileMenu}
+    >
       <Link href="/sdsd" passHref>
         <button className="flex items-center justify-start w-full hover:text-blue-700 hover:bg-blue-50 py-2 pl-4 pr-8">
           <Icon icon="gg:profile" />

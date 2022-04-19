@@ -83,6 +83,7 @@ const NavBar = ({ image, navType }: Props) => {
         </p>
         <button
           onClick={openProfileMenu}
+          onMouseEnter={openProfileMenu}
           className="relative border-2 border-gray-800 hover:border-blue-500 transition-all duration-300 h-12 w-12 rounded-full overflow-hidden"
         >
           <Image src={image} alt="user image" layout="fill" objectFit="cover" />
