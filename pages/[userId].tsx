@@ -99,15 +99,12 @@ const sampleResultLetters = [
 ];
 
 const ProfilePage = () => {
-  const { profileMenu, setProfileMenu } = useContext(LayoutContext);
+  const { profileMenu, setProfileMenu, closeProfileMenu } =
+    useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
   const handleChange = (valueChoice: boolean) => {
     setSectionChoice(valueChoice);
-  };
-
-  const closeProfileMenu = () => {
-    if (profileMenu) setProfileMenu(false);
   };
 
   useEffect(() => {
@@ -115,8 +112,25 @@ const ProfilePage = () => {
   }, [sectionChoice]);
 
   return (
-    <div onClick={closeProfileMenu}>
-      <main className="container max-w-screen-xl text-gray-800">
+    <div onClick={closeProfileMenu} className="relative overflow-x-hidden">
+      <main className="container max-w-screen-xl text-gray-800 ">
+        {/* blob */}
+        <div className="absolute hidden lg:block -top-12 -right-[20%] xl:-right-8 scale-105 -z-10 opacity-60">
+          <div className="absolute top-12 right-0 bg-green-300 rounded-full w-[600px] h-[100px] blur-3xl " />
+          <div className="absolute top-24 right-8 -rotate-15 bg-blue-300 rounded-full w-[600px] h-[150px] blur-3xl " />
+          <div className="absolute top-32 right-0 bg-fuchsia-300 rounded-full w-[500px] h-[200px] blur-3xl " />
+          <div className="absolute top-48 right-80 bg-orange-200/80 rounded-full w-[300px] h-[200px] blur-3xl " />
+          <div className="absolute top-44 -right-24 bg-yellow-200/80 rounded-full w-[500px] h-[300px] blur-3xl " />
+        </div>
+
+        <div className="absolute hidden lg:block top-[600px] left-[20%] -z-10 scale-125 opacity-60">
+          <div className="absolute top-24 right-0 bg-green-300/50 rounded-full h-[500px] w-[300px] blur-3xl " />
+          <div className="absolute top-36 right-8  bg-blue-300 rounded-full h-[300px] w-[150px] blur-3xl " />
+          <div className="absolute top-32 right-24 bg-fuchsia-300 rounded-full h-[400px] w-[200px] blur-3xl " />
+          <div className="absolute top-44 right-36 bg-orange-200/50 rounded-full h-[300px] w-[200px] blur-3xl " />
+          <div className="absolute top-44 right-48 bg-yellow-200 rounded-full h-[400px] w-[300px] blur-3xl " />
+        </div>
+
         {/* nav bar */}
         <NavBar
           image="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"

@@ -1,6 +1,12 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import avatar1 from "../../public/avatars/casual-life-3d-avatar-with-man-in-green-shirt-and-orange-hat.png";
 import avatar2 from "../../public/avatars/casual-life-3d-avatar-with-person-in-glasses-and-orange-shirt.png";
 import avatar3 from "../../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
@@ -9,6 +15,7 @@ import avatar4 from "../../public/avatars/casual-life-3d-avatar-with-woman-in-bl
 import { inviteQuestions } from "../../data/invite-questions";
 import testShuffle from "../../utils/testShuffle";
 import NavBar from "../../components/NavBar";
+import { LayoutContext } from "../../components/context/LayoutContext";
 
 type Option = {
   cognitiveFunction: string;
@@ -16,6 +23,8 @@ type Option = {
 };
 
 const InviteTest = () => {
+  const { closeProfileMenu } = useContext(LayoutContext);
+
   const myRef = useRef<HTMLInputElement>(null);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const [overlay, setOverlay] = useState<boolean>(true);
@@ -28,7 +37,6 @@ const InviteTest = () => {
     new Array(64).fill(null)
   );
   const [progress, setProgress] = useState<number>(0);
-  const [customAvatar, setCustomAvatar] = useState<File | null>(null);
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -108,7 +116,7 @@ const InviteTest = () => {
   };
 
   return (
-    <div>
+    <div onClick={closeProfileMenu}>
       <main className="container flex flex-col items-center max-w-screen-xl text-gray-700 pb-12">
         {/* nav bar */}
         <NavBar
@@ -315,7 +323,7 @@ const InviteTest = () => {
           </div>
         </div>
 
-        <div className="relative flex flex-col items-center h-fit">
+        <div className="relative flex flex-col items-center h-fit w-full">
           {/* overlay */}
           {overlay && (
             <div className="w-[110%] backdrop-blur-sm bg-gradient-to-b bg-white/60 absolute top-14 h-full z-30 ">
@@ -391,7 +399,7 @@ const InviteTest = () => {
                           : index === 7 &&
                             answers[index + 8 * questionPage] &&
                             "peer-checked:text-fuchsia-500"
-                      }`}
+                      }  py-8`}
                     >
                       {item[0].statement}
                     </span>
@@ -457,7 +465,7 @@ const InviteTest = () => {
                           : index === 7 &&
                             answers[index + 8 * questionPage] &&
                             "peer-checked:text-fuchsia-500"
-                      }`}
+                      } py-8`}
                     >
                       {item[1].statement}
                     </span>

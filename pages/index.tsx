@@ -99,7 +99,7 @@ const Home = () => {
 
         <nav className="py-9 flex justify-between items-center">
           <Image src="/logo.svg" alt="logo" width="60" height="60" />
-          <button className="flex items-center bg-gray-900 rounded-full py-3 px-4">
+          <button className="flex items-center bg-gray-900 rounded-full py-3 px-4 hover:scale-105 transition-all duration-300">
             <span className="pr-2 text-white text-sm relative z-10">
               Continue with
             </span>
@@ -158,7 +158,7 @@ const Home = () => {
 
           {/* test buttons */}
           <div className="mb-24 sm:mt-48 w-full sm:flex sm:justify-between md:w-[445px] md:mt-36 md:absolute lg:w-[460px] lg:mt-32">
-            <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-green-100/20 sm:w-[48%] sm:py-8 text-left bg-green-300/20 rounded-2xl p-6 md:mr-3 md:py-7">
+            <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-green-100/20 sm:w-[48%] sm:py-8 text-left bg-green-300/20 rounded-2xl p-6 md:mr-3 md:py-7 hover:bg-green-300/40 transition-all duration-300">
               <div className="relative w-[51px] h-[50px] -mt-1">
                 <Image
                   src={greenCube}
@@ -178,7 +178,7 @@ const Home = () => {
               </div>
             </button>
 
-            <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-pink-100/20 sm:w-[48%] sm:py-8 text-left bg-pink-300/20 rounded-2xl p-6 mt-4 sm:mt-0 md:ml-3 md:py-7 ">
+            <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-pink-100/20 sm:w-[48%] sm:py-8 text-left bg-pink-300/20 rounded-2xl p-6 mt-4 sm:mt-0 md:ml-3 md:py-7 hover:bg-pink-300/40 transition-all duration-300">
               <div className="relative w-[51px] h-[50px] -mt-1">
                 <Image
                   src={purpleShape}
@@ -217,7 +217,7 @@ const Home = () => {
           </div>
 
           {/* traits sample */}
-          <div className="absolute w-[400px] -bottom-72 -left-32">
+          <div className="absolute w-[400px] -bottom-40 -left-44">
             <Traits traits={sampleTraits} type={true} />
           </div>
         </section>

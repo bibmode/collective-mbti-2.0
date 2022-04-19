@@ -65,7 +65,7 @@ const InviteModal = () => {
         <p className="text-sm text-center px-4 mt-3 text-gray-500">
           This link is effective for{" "}
           <span className="underline">anyone you give it to</span>. They will
-          then be redirected to the MBTI test to type you
+          then be redirected to the MBTI test to type you.
         </p>
       </div>
 

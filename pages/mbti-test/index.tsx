@@ -1,6 +1,13 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { LayoutContext } from "../../components/context/LayoutContext";
 import NavBar from "../../components/NavBar";
 
 import { selfQuestions } from "../../data/selftest-questions";
@@ -12,6 +19,7 @@ type Option = {
 };
 
 const SelfTest = () => {
+  const { closeProfileMenu } = useContext(LayoutContext);
   const myRef = useRef<HTMLInputElement>(null);
   const [questionPage, setQuestionPage] = useState<number>(0);
   const [questions, setQuestions] = useState<Option[][][] | null>(null);
@@ -93,7 +101,7 @@ const SelfTest = () => {
   };
 
   return (
-    <div>
+    <div onClick={closeProfileMenu}>
       <main className="container flex flex-col items-center max-w-screen-xl text-gray-700 pb-12">
         {/* nav bar */}
         <NavBar

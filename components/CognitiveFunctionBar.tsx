@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { setInterval } from "timers/promises";
 
 type Props = {
   name: string;
@@ -18,20 +19,31 @@ const colors = [
 ];
 
 const CognitiveFunctionBar = ({ name, value, color }: Props) => {
-  const height = (9 / 100) * value;
+  const finalHeight = value;
+  const [height, setHeight] = useState<number>(0);
+  const [numberValue, setNumberValue] = useState<number>(0);
 
   useEffect(() => {
-    console.log(value);
+    window.setTimeout(() => {
+      if (height < finalHeight) {
+        setHeight(height + 1);
+        setNumberValue(numberValue + 1);
+      } else return;
+    }, 20);
+  }, [height]);
+
+  useEffect(() => {
+    window.setTimeout(() => setHeight(height + 1), 20);
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <p className="font-semibold text-[11px] text-gray-600">{value}%</p>
+    <div className="flex flex-col items-center w-[24px]">
+      <p className="font-semibold text-[11px] text-gray-600">{numberValue}%</p>
 
       <div className="relative w-3 h-36 rounded-lg bg-gray-100 my-2">
         <div
           className={`absolute bottom-0 w-3 rounded-lg`}
-          style={{ height: `${height}rem`, backgroundColor: colors[color] }}
+          style={{ height: `${height}%`, backgroundColor: colors[color] }}
         />
       </div>
 

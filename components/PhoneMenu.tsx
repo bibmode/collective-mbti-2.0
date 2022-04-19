@@ -5,10 +5,15 @@ import envelope from "../public/user images/casual-life-3d-white-envelope-with-b
 import { LayoutContext } from "./context/LayoutContext";
 
 const PhoneMenu = () => {
-  const { phoneMenu, setPhoneMenu } = useContext(LayoutContext);
+  const { phoneMenu, setPhoneMenu, setEditModal } = useContext(LayoutContext);
 
   const closeModal = () => {
     setPhoneMenu(false);
+  };
+
+  const handleEdit = () => {
+    closeModal();
+    setEditModal(true);
   };
 
   return (
@@ -34,7 +39,7 @@ const PhoneMenu = () => {
 
         {/* basic menu */}
         <button
-          onClick={closeModal}
+          onClick={handleEdit}
           className="flex text-lg items-center justify-between w-full py-2 border-b border-gray-200"
         >
           <span className="mr-5">Edit</span>
@@ -85,7 +90,7 @@ const PhoneMenu = () => {
           <p className="text-sm text-center mt-3 ">
             This link is effective for{" "}
             <span className="underline">anyone you give it to</span>. They will
-            then be redirected to the MBTI test to type you
+            then be redirected to the MBTI test to type you.
           </p>
         </div>
       </div>

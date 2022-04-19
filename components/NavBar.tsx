@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { LayoutContext } from "./context/LayoutContext";
 import ProfileMenu from "./ProfileMenu";
@@ -29,12 +30,14 @@ const NavBar = ({ image, navType }: Props) => {
       {/* profile menu for desktop */}
       {profileMenu && <ProfileMenu />}
 
-      <div className="flex items-center">
-        <Image src="/logo.svg" alt="logo" width="50" height="50" />
-        <h1 className="uppercase font-bold text-[21px] w-28 leading-tight ml-3">
-          collective mbti
-        </h1>
-      </div>
+      <Link href="/" passHref>
+        <button className="flex items-center">
+          <Image src="/logo.svg" alt="logo" width="50" height="50" />
+          <h1 className="uppercase font-bold text-[21px] text-left w-28 leading-tight ml-3">
+            collective mbti
+          </h1>
+        </button>
+      </Link>
 
       {/* mobile hamburger button */}
       <label className="text-4xl -mt-5 md:hidden">
@@ -51,11 +54,11 @@ const NavBar = ({ image, navType }: Props) => {
       {/* change for type fo page */}
       {navType ? (
         <div className="hidden md:flex text-xs">
-          <button className="px-6 py-2 w-[137px] bg-gray-800 text-white font-medium rounded-full">
+          <button className="px-6 py-2 w-[137px] transition-all duration-300 bg-gray-800 text-white font-medium rounded-full hover:scale-105">
             Take the Test
           </button>
           <button
-            className="px-6 py-2 ml-4 w-[137px] text-gray-600 bg-white border border-gray-300 font-medium rounded-full"
+            className="px-6 py-2 ml-4 w-[137px] transition-all duration-300 text-gray-600 bg-white border border-gray-300 font-medium rounded-full hover:scale-105"
             onClick={toggleInvite}
           >
             Invite friends to type you
@@ -78,7 +81,7 @@ const NavBar = ({ image, navType }: Props) => {
         </p>
         <button
           onClick={openProfileMenu}
-          className="relative border-2 border-gray-800 h-12 w-12 rounded-full overflow-hidden"
+          className="relative border-2 border-gray-800 hover:border-blue-500 transition-all duration-300 h-12 w-12 rounded-full overflow-hidden"
         >
           <Image src={image} alt="user image" layout="fill" objectFit="cover" />
         </button>

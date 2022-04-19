@@ -109,7 +109,9 @@ const Results = ({ indicator }: Props) => {
           />
           <label
             htmlFor={`result-${indicator}-1`}
-            className={`uppercase py-4 pl-7 pr-2 grow ${optionStyle(1)}`}
+            className={`uppercase py-4 pl-7 pr-2 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
+              1
+            )}`}
           >
             accumulative result
           </label>
@@ -123,7 +125,7 @@ const Results = ({ indicator }: Props) => {
           />
           <label
             htmlFor={`result-${indicator}-2`}
-            className={`border-x border-gray-200 uppercase py-4 px-2 grow ${optionStyle(
+            className={`border-x border-gray-200 uppercase py-4 px-2 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
               2
             )}`}
           >
@@ -139,7 +141,9 @@ const Results = ({ indicator }: Props) => {
           />
           <label
             htmlFor={`result-${indicator}-3`}
-            className={`uppercase py-4 pl-2 pr-6 grow ${optionStyle(3)}`}
+            className={`uppercase py-4 pl-2 pr-6 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
+              3
+            )}`}
           >
             self-tested result
           </label>
