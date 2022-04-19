@@ -1,6 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import React, { useState } from "react";
 import CircularProgressBar from "./CircularProgressBar";
+import CognitiveFunctionBar from "./CognitiveFunctionBar";
 type Result = {
   cognitiveFunc: string;
   level: number;
@@ -108,17 +109,12 @@ const Typology = ({
               key={index}
               className="flex justify-between items-center font-semibold text-[14px] text-gray-600"
             >
-              <p className="w-[30px]">{result.cognitiveFunc}</p>
-              <div className="self-center mx-4 h-[8px] w-full bg-gray-200/70 rounded-lg">
-                <div
-                  className={`h-[8px]  rounded-lg`}
-                  style={{
-                    width: `${result.level}%`,
-                    backgroundColor: result.color,
-                  }}
-                />
-              </div>
-              <p className="w-11">{result.level}%</p>
+              <CognitiveFunctionBar
+                name={result.cognitiveFunc}
+                value={result.level}
+                color={index}
+                type="horizontal"
+              />
             </div>
           ))
         ) : (

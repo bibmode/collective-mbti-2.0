@@ -220,6 +220,7 @@ const Results = ({ indicator }: Props) => {
                 name={result.name}
                 value={result.value}
                 color={index}
+                type="vertical"
               />
             ))}
           </div>
