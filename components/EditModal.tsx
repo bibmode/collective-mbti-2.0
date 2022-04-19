@@ -89,7 +89,7 @@ const EditModal = () => {
           <button className="bg-blue-500 hover:bg-blue-700 px-6 py-2 rounded-full">
             Save
           </button>
-          <button className="bg-blue-500 hover:bg-blue-700 px-6 py-2 ml-2 rounded-full">
+          <button className="bg-blue-500 hover:bg-blue-700 px-6 py-2 ml-3 rounded-full">
             Cancel
           </button>
         </div>

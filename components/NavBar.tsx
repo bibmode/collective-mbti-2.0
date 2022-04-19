@@ -54,9 +54,11 @@ const NavBar = ({ image, navType }: Props) => {
       {/* change for type fo page */}
       {navType ? (
         <div className="hidden md:flex text-xs">
-          <button className="px-6 py-2 w-[137px] transition-all duration-300 bg-gray-800 text-white font-medium rounded-full hover:scale-105">
-            Take the Test
-          </button>
+          <Link href="/mbti-test" passHref>
+            <button className="px-6 py-2 w-[137px] transition-all duration-300 bg-gray-800 text-white font-medium rounded-full hover:scale-105">
+              Take the Test
+            </button>
+          </Link>
           <button
             className="px-6 py-2 ml-4 w-[137px] transition-all duration-300 text-gray-600 bg-white border border-gray-300 font-medium rounded-full hover:scale-105"
             onClick={toggleInvite}

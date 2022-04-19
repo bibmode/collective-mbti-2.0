@@ -9,6 +9,7 @@ import screenshot from "../public/index-images/screenshot-desktop.png";
 import avatar from "../public/avatars/casual-life-3d-avatar-with-person-in-glasses-and-orange-shirt.png";
 import TypologyExample from "../components/TypologyExample";
 import Traits from "../components/Traits";
+import Link from "next/link";
 
 const sampleResult = [
   {
@@ -158,25 +159,27 @@ const Home = () => {
 
           {/* test buttons */}
           <div className="mb-24 sm:mt-48 w-full sm:flex sm:justify-between md:w-[445px] md:mt-36 md:absolute lg:w-[460px] lg:mt-32">
-            <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-green-100/20 sm:w-[48%] sm:py-8 text-left bg-green-300/20 rounded-2xl p-6 md:mr-3 md:py-7 hover:bg-green-300/40 transition-all duration-300">
-              <div className="relative w-[51px] h-[50px] -mt-1">
-                <Image
-                  src={greenCube}
-                  alt="green cube"
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </div>
+            <Link href="/mbti-test" passHref>
+              <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-green-100/20 sm:w-[48%] sm:py-8 text-left bg-green-300/20 rounded-2xl p-6 md:mr-3 md:py-7 hover:bg-green-300/40 transition-all duration-300">
+                <div className="relative w-[51px] h-[50px] -mt-1">
+                  <Image
+                    src={greenCube}
+                    alt="green cube"
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
 
-              <div className="ml-3 md:ml-0 md:mt-1">
-                <h3 className="font-semibold text-lg mb-1">
-                  Take the test yourself
-                </h3>
-                <p className="text-[15px] text-gray-400">
-                  Don’t have friends? Try typing yourself objectively.
-                </p>
-              </div>
-            </button>
+                <div className="ml-3 md:ml-0 md:mt-1">
+                  <h3 className="font-semibold text-lg mb-1">
+                    Take the test yourself
+                  </h3>
+                  <p className="text-[15px] text-gray-400">
+                    Don’t have friends? Try typing yourself objectively.
+                  </p>
+                </div>
+              </button>
+            </Link>
 
             <button className="flex sm:flex-col w-full backdrop-blur-2xl border-[1px] border-pink-100/20 sm:w-[48%] sm:py-8 text-left bg-pink-300/20 rounded-2xl p-6 mt-4 sm:mt-0 md:ml-3 md:py-7 hover:bg-pink-300/40 transition-all duration-300">
               <div className="relative w-[51px] h-[50px] -mt-1">

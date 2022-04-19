@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext } from "react";
 import envelope from "../public/user images/casual-life-3d-white-envelope-with-blue-letter 1.png";
 import { LayoutContext } from "./context/LayoutContext";
@@ -53,12 +54,14 @@ const PhoneMenu = () => {
           <Icon icon="fluent:arrow-exit-20-filled" />
         </button>
 
-        <button
-          onClick={closeModal}
-          className="px-6 py-3 my-4 w-full bg-gray-800 text-white font-medium rounded-full"
-        >
-          Take the Test
-        </button>
+        <Link href="/mbti-test" passHref>
+          <button
+            onClick={closeModal}
+            className="px-6 py-3 my-4 w-full bg-gray-800 text-white font-medium rounded-full"
+          >
+            Take the Test
+          </button>
+        </Link>
 
         <div className="border-t border-gray-800 -mx-6 py-3 flex justify-center items-center">
           <Image src={envelope} alt="envelope" width={27} height={27} />

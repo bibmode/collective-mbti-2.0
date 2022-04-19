@@ -54,7 +54,7 @@ const InviteTest = () => {
 
   const scrollToTop = () => {
     if (myRef.current && !initialLoad)
-      window.scrollTo(0, myRef.current.offsetTop - 100);
+      window.scrollTo(0, myRef.current.offsetTop + 390);
   };
 
   const checkIfAllItemsAreAnswered = () => {
@@ -63,10 +63,13 @@ const InviteTest = () => {
   };
 
   useLayoutEffect(() => {
-    // TODO: uncomment this after form styling
     scrollToTop();
     setInitialLoad(false);
   }, [questionPage]);
+
+  const moveDown = () => {
+    window.scrollBy(0, 200);
+  };
 
   const handleChoice = (
     answer: string,
@@ -85,6 +88,7 @@ const InviteTest = () => {
 
     setAnswers(newAnswers);
     setAnswerColors(newAnswerColors);
+    moveDown();
   };
 
   const updateProgress = () => {

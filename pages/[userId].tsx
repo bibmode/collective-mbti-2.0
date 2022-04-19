@@ -99,8 +99,7 @@ const sampleResultLetters = [
 ];
 
 const ProfilePage = () => {
-  const { profileMenu, setProfileMenu, closeProfileMenu } =
-    useContext(LayoutContext);
+  const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
   const handleChange = (valueChoice: boolean) => {

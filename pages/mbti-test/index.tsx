@@ -58,6 +58,10 @@ const SelfTest = () => {
     scrollToTop();
   }, [questionPage]);
 
+  const moveDown = () => {
+    window.scrollBy(0, 200);
+  };
+
   const handleChoice = (
     answer: string,
     questionIndex: number,
@@ -75,6 +79,7 @@ const SelfTest = () => {
 
     setAnswers(newAnswers);
     setAnswerColors(newAnswerColors);
+    moveDown();
   };
 
   const updateProgress = () => {

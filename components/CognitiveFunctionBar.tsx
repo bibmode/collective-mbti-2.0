@@ -48,7 +48,7 @@ const HorizontalBar = ({ color, length, name }: BarProps) => {
       <p className="w-[30px]">{name}</p>
       <div className="self-center mx-4 h-[8px] w-full bg-gray-200/70 rounded-lg">
         <div
-          className={`h-[8px]  rounded-lg`}
+          className={`h-[8px] transition-all duration-300 rounded-lg`}
           style={{
             width: `${length}%`,
             backgroundColor: colors[color],
