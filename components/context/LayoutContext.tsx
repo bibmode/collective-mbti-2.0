@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { createContext, useRef, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import EditModal from "../EditModal";
 import InviteModal from "../InviteModal";
 import PhoneMenu from "../PhoneMenu";
@@ -31,10 +32,27 @@ const LayoutContextProvider = ({ children }: Props) => {
   const [profileMenu, setProfileMenu] = useState<boolean>(false);
   const [phoneMenu, setPhoneMenu] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
+  const [underlay, setUnderlay] = useState(false);
 
   const closeProfileMenu = () => {
     if (profileMenu) setProfileMenu(false);
   };
+
+  const closeModal = () => {
+    setEditModal(false);
+    setPhoneMenu(false);
+    setInviteModal(false);
+    console.log("iclose dude");
+  };
+
+  const modalOpenedChecker = () => {
+    if (inviteModal || editModal || phoneMenu) setUnderlay(true);
+    else setUnderlay(false);
+  };
+
+  useEffect(() => {
+    modalOpenedChecker();
+  }, [inviteModal, editModal, phoneMenu]);
 
   return (
     <LayoutContext.Provider
@@ -52,10 +70,20 @@ const LayoutContextProvider = ({ children }: Props) => {
         setEditModal,
       }}
     >
-      <div className="bg-blue-50/20">
-        {editModal && <EditModal />}
-        {phoneMenu && <PhoneMenu />}
-        {inviteModal && <InviteModal />}
+      <div className="bg-blue-50/20 relative">
+        <AnimatePresence>{editModal && <EditModal />}</AnimatePresence>
+        <AnimatePresence>{phoneMenu && <PhoneMenu />}</AnimatePresence>
+        <AnimatePresence>{inviteModal && <InviteModal />}</AnimatePresence>
+        <AnimatePresence>
+          {underlay && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-screen w-screen bg-gray-800/70 fixed z-30"
+            ></motion.div>
+          )}
+        </AnimatePresence>
         {children}
       </div>
     </LayoutContext.Provider>

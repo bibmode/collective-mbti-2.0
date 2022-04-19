@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import envelope from "../public/user images/casual-life-3d-white-envelope-with-blue-letter 1.png";
 import { LayoutContext } from "./context/LayoutContext";
+import { motion } from "framer-motion";
 
 const PhoneMenu = () => {
   const { phoneMenu, setPhoneMenu, setEditModal } = useContext(LayoutContext);
@@ -18,7 +19,13 @@ const PhoneMenu = () => {
   };
 
   return (
-    <div className="fixed w-full z-50">
+    <motion.div
+      className="fixed w-full z-50"
+      initial={{ y: -1000 }}
+      animate={{ y: 0 }}
+      exit={{ y: -1000 }}
+      transition={{ type: "spring", bounce: 0.05 }}
+    >
       <div className="absolute w-full px-6 bg-white drop-shadow-xl">
         {/* header */}
         <div className="pt-8 pb-4 flex justify-between items-center">
@@ -99,11 +106,8 @@ const PhoneMenu = () => {
       </div>
 
       {/* overlay */}
-      <div
-        className="h-screen w-screen bg-gray-800/50"
-        onClick={closeModal}
-      ></div>
-    </div>
+      <div className="h-screen w-screen" onClick={closeModal}></div>
+    </motion.div>
   );
 };
 

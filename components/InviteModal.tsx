@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import envelope from "../public/user images/casual-life-3d-white-envelope-with-blue-letter 1.png";
 import { LayoutContext } from "./context/LayoutContext";
+import { motion } from "framer-motion";
 
 const InviteModal = () => {
   const { setInviteModal } = useContext(LayoutContext);
@@ -20,9 +21,15 @@ const InviteModal = () => {
   };
 
   return (
-    <div className="fixed z-40">
+    <motion.div
+      className="fixed z-40"
+      initial={{ y: -1000 }}
+      animate={{ y: 0 }}
+      exit={{ y: -1000 }}
+      transition={{ type: "spring", bounce: 0.05 }}
+    >
       {/* invite modal */}
-      <div className="absolute z-30 drop-shadow-lg top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full max-w-md px-6 py-8 bg-white  rounded-3xl">
+      <div className="absolute z-30 drop-shadow-lg sm:top-[50%] sm:left-[50%] sm:-translate-x-[50%] sm:-translate-y-[50%] w-full sm:max-w-md px-6 py-8 bg-white  sm:rounded-3xl">
         {/* close button */}
 
         {/* header */}
@@ -71,10 +78,10 @@ const InviteModal = () => {
 
       {/* overlay */}
       <div
-        className="h-screen w-screen bg-gray-800/70"
+        className="h-screen w-screen"
         onClick={() => setInviteModal(false)}
       ></div>
-    </div>
+    </motion.div>
   );
 };
 
