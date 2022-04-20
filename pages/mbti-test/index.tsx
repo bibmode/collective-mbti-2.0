@@ -54,7 +54,7 @@ const SelfTest = () => {
     return answersLen !== 0;
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     scrollToTop();
   }, [questionPage]);
 

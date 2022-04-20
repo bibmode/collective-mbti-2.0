@@ -10,6 +10,7 @@ import avatar from "../public/avatars/casual-life-3d-avatar-with-person-in-glass
 import TypologyExample from "../components/TypologyExample";
 import Traits from "../components/Traits";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const sampleResult = [
   {

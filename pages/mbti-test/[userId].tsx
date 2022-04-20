@@ -62,7 +62,7 @@ const InviteTest = () => {
     return answersLen !== 0;
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     scrollToTop();
     setInitialLoad(false);
   }, [questionPage]);

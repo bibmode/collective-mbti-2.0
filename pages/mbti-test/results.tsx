@@ -32,72 +32,6 @@ const positiveTraits = [
   },
 ];
 
-const sampleResultCognitive = [
-  {
-    cognitiveFunc: "Ne",
-    level: 85,
-    color: "#ef4444",
-  },
-  {
-    cognitiveFunc: "Ti",
-    level: 70,
-    color: "#f97316",
-  },
-  {
-    cognitiveFunc: "Fe",
-    level: 50,
-    color: "#facc15",
-  },
-  {
-    cognitiveFunc: "Si",
-    level: 30,
-    color: "#10b981",
-  },
-  {
-    cognitiveFunc: "Ne",
-    level: 25,
-    color: "#3b82f6",
-  },
-  {
-    cognitiveFunc: "Ti",
-    level: 25,
-    color: "#6366f1",
-  },
-  {
-    cognitiveFunc: "Fe",
-    level: 10,
-    color: "#a855f7",
-  },
-  {
-    cognitiveFunc: "Si",
-    level: 5,
-    color: "#f472b6",
-  },
-];
-
-const sampleResultLetters = [
-  {
-    letter: "Extroverted",
-    level: 56,
-    color: "#3b82f6",
-  },
-  {
-    letter: "Intuitive",
-    level: 56,
-    color: "#facc15",
-  },
-  {
-    letter: "Thinking",
-    level: 56,
-    color: "#ef4444",
-  },
-  {
-    letter: "Perceiving",
-    level: 56,
-    color: "#10b981",
-  },
-];
-
 const ResultPage = () => {
   const { profileMenu, setProfileMenu, closeProfileMenu } =
     useContext(LayoutContext);
@@ -174,13 +108,28 @@ const ResultPage = () => {
         <div className="hidden md:block">
           <Results indicator="profile-desktop" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-8">
-            <div className="mb-10">
-              <Traits type={true} traits={positiveTraits} />
+          <div className="flex justify-between">
+            <div className="grow mr-8 lg:mr-12">
+              <div className="md:w-full flex flex-col items-center justify-center">
+                {/* unregistered user result */}
+                <p className="text-sm my-3">
+                  You&apos;re currently unregistered. Sign in or create an
+                  account to save your results.
+                </p>
+                <button className="uppercase bg-blue-500 hover:bg-blue-600  transition-all duration-300 text-white font-medium px-6 py-3 rounded-full">
+                  save results
+                </button>
+              </div>
             </div>
 
-            <div className="mb-10">
-              <Traits type={false} traits={positiveTraits} />
+            <div className="max-w-xs">
+              <div className="mb-10">
+                <Traits type={true} traits={positiveTraits} />
+              </div>
+
+              <div className="mb-10">
+                <Traits type={false} traits={positiveTraits} />
+              </div>
             </div>
           </div>
         </div>
