@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { LayoutContext } from "../../components/context/LayoutContext";
 import NavBar from "../../components/NavBar";
 import Results from "../../components/Results";
@@ -8,6 +8,7 @@ import Traits from "../../components/Traits";
 import Typology from "../../components/Typology";
 import TypologyBar from "../../components/TypologyBar";
 import avatar from "../../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
+import mbtiCalculator from "../../utils/mbtiCalculator";
 
 const positiveTraits = [
   {
@@ -42,8 +43,8 @@ const ResultPage = () => {
   };
 
   useEffect(() => {
-    console.log(sectionChoice);
-  }, [sectionChoice]);
+    // mbtiCalculator();
+  }, []);
 
   return (
     <div onClick={closeProfileMenu} className="relative overflow-hidden">

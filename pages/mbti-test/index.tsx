@@ -11,6 +11,7 @@ import { LayoutContext } from "../../components/context/LayoutContext";
 import NavBar from "../../components/NavBar";
 
 import { selfQuestions } from "../../data/selftest-questions";
+import mbtiCalculator from "../../utils/mbtiCalculator";
 import testShuffle from "../../utils/testShuffle";
 
 type Option = {
@@ -102,7 +103,8 @@ const SelfTest = () => {
   }, [answers]);
 
   const submitAnswers = () => {
-    console.log(answers);
+    const results = mbtiCalculator(answers);
+    console.log(results);
   };
 
   return (
