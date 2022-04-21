@@ -81,7 +81,7 @@ const InviteModal = () => {
             <Icon icon="bxs:copy-alt" />
           </button>
 
-          <p className="hidden absolute peer-hover:block -top-6 right-1 text-gray-500 text-xs">
+          <p className="hidden absolute peer-hover:block -top-5 right-1 text-gray-500 text-xs">
             {copyIndicator ? "Copied" : "Copy"}
           </p>
         </div>
