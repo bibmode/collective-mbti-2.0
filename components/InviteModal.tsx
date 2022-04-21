@@ -47,6 +47,24 @@ const InviteModal = () => {
           </button>
         </div>
 
+        {/* pronoun */}
+        <div className="flex justify-between items-center px-4 mt-4">
+          <p>Your preferred pronouns: </p>
+
+          {/* selection */}
+          <div className="relative w-fit">
+            <select className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline">
+              <option value="female">She/Her</option>
+              <option value="male">He/Him</option>
+              <option value="non-binary">They/Them</option>
+            </select>
+
+            <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center px-2 text-white">
+              <Icon icon="ant-design:caret-down-filled" />
+            </div>
+          </div>
+        </div>
+
         {/* link to send */}
         <div className="w-full relative flex bg-blue-100 px-4 py-2 rounded-full mt-6 mb-4">
           <input

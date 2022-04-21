@@ -76,6 +76,24 @@ const PhoneMenu = () => {
         </div>
 
         <div className="bg-gray-900 -mx-6 px-6 py-7 text-white">
+          {/* pronoun */}
+          <div className="flex justify-between items-center mb-5">
+            <p className="text-sm">Your preferred pronouns: </p>
+
+            {/* selection */}
+            <div className="relative w-fit">
+              <select className="block bg-blue-600 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline">
+                <option value="female">She/Her</option>
+                <option value="male">He/Him</option>
+                <option value="non-binary">They/Them</option>
+              </select>
+
+              <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center px-2 text-white">
+                <Icon icon="ant-design:caret-down-filled" />
+              </div>
+            </div>
+          </div>
+
           {/* link */}
           <div className="w-full relative flex bg-blue-400/10 border border-blue-500 px-4 py-3 rounded-full mb-3">
             <input

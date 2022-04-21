@@ -153,10 +153,10 @@ const InviteTest = () => {
 
               <div className="relative w-fit">
                 <select className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline">
-                  <option value="volvo">Friend</option>
-                  <option value="saab">Romantic</option>
-                  <option value="opel">Family</option>
-                  <option value="audi">Business</option>
+                  <option value="friend">Friend</option>
+                  <option value="romantic">Romantic</option>
+                  <option value="family">Family</option>
+                  <option value="business">Business</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center px-2 text-white">
                   <Icon icon="ant-design:caret-down-filled" />

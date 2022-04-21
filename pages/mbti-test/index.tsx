@@ -104,7 +104,7 @@ const SelfTest = () => {
 
   const submitAnswers = () => {
     const results = mbtiCalculator(answers);
-    // console.log(results);
+    console.log(results);
   };
 
   return (
