@@ -30,7 +30,7 @@ const SelfTest = () => {
   const [answerColors, setAnswerColors] = useState<number[] | []>(
     new Array(64).fill(null)
   );
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -104,7 +104,7 @@ const SelfTest = () => {
 
   const submitAnswers = () => {
     const results = mbtiCalculator(answers);
-    console.log(results);
+    // console.log(results);
   };
 
   return (
