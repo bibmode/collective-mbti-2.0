@@ -11,6 +11,8 @@ import TypologyExample from "../components/TypologyExample";
 import Traits from "../components/Traits";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const sampleResult = [
   {
@@ -79,6 +81,19 @@ const sampleTraits = [
 ];
 
 const Home = () => {
+  const { data: session, status } = useSession();
+
+  const signInWithGoogle = () => {
+    // Perform sign in
+    signIn("google", {
+      callbackUrl: window.location.href,
+    });
+  };
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
   return (
     <div className="overflow-x-hidden">
       <Head>
@@ -101,7 +116,10 @@ const Home = () => {
 
         <nav className="py-9 flex justify-between items-center">
           <Image src="/logo.svg" alt="logo" width="60" height="60" />
-          <button className="flex items-center bg-gray-900 rounded-full py-3 px-4 hover:scale-105 transition-all duration-300">
+          <button
+            onClick={signInWithGoogle}
+            className="flex items-center bg-gray-900 rounded-full py-3 px-4 hover:scale-105 transition-all duration-300"
+          >
             <span className="pr-2 text-white text-sm relative z-10">
               Continue with
             </span>
