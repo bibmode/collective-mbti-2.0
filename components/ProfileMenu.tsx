@@ -1,12 +1,23 @@
 import { Icon } from "@iconify/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useContext, useLayoutEffect, useRef } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { LayoutContext } from "./context/LayoutContext";
 
 const ProfileMenu = () => {
   const { setEditModal, setProfileMenu } = useContext(LayoutContext);
 
-  const handleLogout = () => {};
+  const { data: session, status } = useSession();
+
+  const handleLogout = () => {
+    signOut();
+  };
 
   const handleEdit = () => {
     setEditModal(true);
@@ -21,7 +32,7 @@ const ProfileMenu = () => {
       className="absolute z-50 right-0 top-[85%] bg-white drop-shadow-lg rounded-xl overflow-hidden"
       onMouseLeave={closeProfileMenu}
     >
-      <Link href="/sdsd" passHref>
+      <Link href={`/`} passHref>
         <button className="flex items-center justify-start w-full hover:text-blue-700 hover:bg-blue-50 py-2 pl-4 pr-8">
           <Icon icon="gg:profile" />
           <span className="ml-2">Profile</span>

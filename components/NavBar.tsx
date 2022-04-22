@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { LayoutContext } from "./context/LayoutContext";
+import ProfileButton from "./ProfileButton";
 import ProfileMenu from "./ProfileMenu";
 
 type Props = {
@@ -15,10 +16,6 @@ const NavBar = ({ image, navType }: Props) => {
 
   const toggleInvite = () => {
     setInviteModal(true);
-  };
-
-  const openProfileMenu = () => {
-    setProfileMenu(true);
   };
 
   const openPhoneMenu = () => {
@@ -77,18 +74,7 @@ const NavBar = ({ image, navType }: Props) => {
       )}
 
       {/* profile button */}
-      <div className="hidden md:flex items-center">
-        <p className="text-[15px] max-w-[100px] mr-3 text-right leading-tight font-semibold text-gray-700">
-          GENEVIEVE NAVALES
-        </p>
-        <button
-          onClick={openProfileMenu}
-          onMouseEnter={openProfileMenu}
-          className="relative border-2 border-gray-800 hover:border-blue-500 transition-all duration-300 h-12 w-12 rounded-full overflow-hidden"
-        >
-          <Image src={image} alt="user image" layout="fill" objectFit="cover" />
-        </button>
-      </div>
+      <ProfileButton image={image} />
     </nav>
   );
 };

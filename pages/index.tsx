@@ -12,7 +12,10 @@ import Traits from "../components/Traits";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import ProfileButton from "../components/ProfileButton";
+import ProfileMenu from "../components/ProfileMenu";
+import { LayoutContext } from "../components/context/LayoutContext";
 
 const sampleResult = [
   {
@@ -81,6 +84,7 @@ const sampleTraits = [
 ];
 
 const Home = () => {
+  const { profileMenu } = useContext(LayoutContext);
   const { data: session, status } = useSession();
 
   const signInWithGoogle = () => {
@@ -114,17 +118,25 @@ const Home = () => {
           <div className="absolute top-96 -right-6  bg-green-200/80 rounded-full w-[600px] h-[450px] blur-3xl " />
         </div>
 
-        <nav className="py-9 flex justify-between items-center">
+        <nav className="py-9 flex relative justify-between items-center">
+          {profileMenu && <ProfileMenu />}
+
           <Image src="/logo.svg" alt="logo" width="60" height="60" />
-          <button
-            onClick={signInWithGoogle}
-            className="flex items-center bg-gray-900 rounded-full py-3 px-4 hover:scale-105 transition-all duration-300"
-          >
-            <span className="pr-2 text-white text-sm relative z-10">
-              Continue with
-            </span>
-            <Icon className="text-xl" icon="flat-color-icons:google" />
-          </button>
+          {session ? (
+            <ProfileButton
+              image={session?.user?.image ? session?.user?.image : ""}
+            />
+          ) : (
+            <button
+              onClick={signInWithGoogle}
+              className="flex items-center bg-gray-900 rounded-full py-3 px-4 hover:scale-105 transition-all duration-300"
+            >
+              <span className="pr-2 text-white text-sm relative z-10">
+                Continue with
+              </span>
+              <Icon className="text-xl" icon="flat-color-icons:google" />
+            </button>
+          )}
         </nav>
 
         <header className="relative lg:mt-14 lg:min-h-[800px]">

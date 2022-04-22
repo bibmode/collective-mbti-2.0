@@ -1,4 +1,6 @@
 import { Icon } from "@iconify/react";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { LayoutContext } from "../components/context/LayoutContext";
@@ -7,6 +9,7 @@ import Results from "../components/Results";
 import Traits from "../components/Traits";
 import Typology from "../components/Typology";
 import TypologyBar from "../components/TypologyBar";
+import { prisma } from "../lib/prisma";
 import avatar from "../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
 
 const positiveTraits = [
@@ -98,13 +101,47 @@ const sampleResultLetters = [
   },
 ];
 
-const ProfilePage = () => {
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  // find user
+  const userRes = await prisma.user.findFirst({
+    where: { email: session.user?.email },
+  });
+
+  const userDetails = await JSON.parse(JSON.stringify(userRes));
+
+  return {
+    props: {
+      userId: await userDetails.id,
+    },
+  };
+};
+
+type ProfilePageProps = {
+  userId: string;
+};
+
+const ProfilePage = ({ userId }: ProfilePageProps) => {
   const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
   const handleChange = (valueChoice: boolean) => {
     setSectionChoice(valueChoice);
   };
+
+  useEffect(() => {
+    console.log(userId);
+  }, []);
 
   useEffect(() => {
     console.log(sectionChoice);
