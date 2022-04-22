@@ -101,47 +101,13 @@ const sampleResultLetters = [
   },
 ];
 
-export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
-  const session = await getSession(ctx);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  // find user
-  const userRes = await prisma.user.findFirst({
-    where: { email: session.user?.email },
-  });
-
-  const userDetails = await JSON.parse(JSON.stringify(userRes));
-
-  return {
-    props: {
-      userId: await userDetails.id,
-    },
-  };
-};
-
-type ProfilePageProps = {
-  userId: string;
-};
-
-const ProfilePage = ({ userId }: ProfilePageProps) => {
+const ProfilePage = () => {
   const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
   const handleChange = (valueChoice: boolean) => {
     setSectionChoice(valueChoice);
   };
-
-  useEffect(() => {
-    console.log(userId);
-  }, []);
 
   useEffect(() => {
     console.log(sectionChoice);

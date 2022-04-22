@@ -22,6 +22,8 @@ type LayoutContextType = {
   closeProfileMenu: () => void;
   editModal: boolean;
   setEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  profileId: string;
+  setProfileId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const LayoutContext = createContext({} as LayoutContextType);
@@ -33,16 +35,10 @@ const LayoutContextProvider = ({ children }: Props) => {
   const [phoneMenu, setPhoneMenu] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
   const [underlay, setUnderlay] = useState(false);
+  const [profileId, setProfileId] = useState<string>("");
 
   const closeProfileMenu = () => {
     if (profileMenu) setProfileMenu(false);
-  };
-
-  const closeModal = () => {
-    setEditModal(false);
-    setPhoneMenu(false);
-    setInviteModal(false);
-    console.log("iclose dude");
   };
 
   const modalOpenedChecker = () => {
@@ -68,6 +64,8 @@ const LayoutContextProvider = ({ children }: Props) => {
         closeProfileMenu,
         editModal,
         setEditModal,
+        profileId,
+        setProfileId,
       }}
     >
       <div className="bg-blue-50/20 relative">

@@ -11,11 +11,13 @@ import TypologyExample from "../components/TypologyExample";
 import Traits from "../components/Traits";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import { useContext, useEffect } from "react";
 import ProfileButton from "../components/ProfileButton";
 import ProfileMenu from "../components/ProfileMenu";
 import { LayoutContext } from "../components/context/LayoutContext";
+import { prisma } from "../lib/prisma";
+import { GetServerSideProps } from "next";
 
 const sampleResult = [
   {
@@ -83,8 +85,38 @@ const sampleTraits = [
   },
 ];
 
-const Home = () => {
-  const { profileMenu } = useContext(LayoutContext);
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  // find user
+  const userRes = await prisma.user.findFirst({
+    where: { email: session.user?.email },
+  });
+
+  const userDetails = await JSON.parse(JSON.stringify(userRes));
+
+  return {
+    props: {
+      userId: await userDetails.id,
+    },
+  };
+};
+
+type HomeProps = {
+  userId: string;
+};
+
+const Home = ({ userId }: HomeProps) => {
+  const { profileMenu, setProfileId } = useContext(LayoutContext);
   const { data: session, status } = useSession();
 
   const signInWithGoogle = () => {
@@ -95,7 +127,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(session);
+    if (userId) setProfileId(userId);
+  }, []);
+
+  useEffect(() => {
+    session && console.log(session);
   }, [session]);
 
   return (

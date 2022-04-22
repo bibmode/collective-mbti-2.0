@@ -11,7 +11,7 @@ import React, {
 import { LayoutContext } from "./context/LayoutContext";
 
 const ProfileMenu = () => {
-  const { setEditModal, setProfileMenu } = useContext(LayoutContext);
+  const { setEditModal, setProfileMenu, profileId } = useContext(LayoutContext);
 
   const { data: session, status } = useSession();
 
@@ -32,7 +32,7 @@ const ProfileMenu = () => {
       className="absolute z-50 right-0 top-[85%] bg-white drop-shadow-lg rounded-xl overflow-hidden"
       onMouseLeave={closeProfileMenu}
     >
-      <Link href={`/`} passHref>
+      <Link href={`/${profileId}`} passHref>
         <button className="flex items-center justify-start w-full hover:text-blue-700 hover:bg-blue-50 py-2 pl-4 pr-8">
           <Icon icon="gg:profile" />
           <span className="ml-2">Profile</span>
