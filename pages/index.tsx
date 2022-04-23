@@ -15,7 +15,7 @@ import { getSession, signIn, useSession } from "next-auth/react";
 import { useContext, useEffect } from "react";
 import ProfileButton from "../components/ProfileButton";
 import ProfileMenu from "../components/ProfileMenu";
-import { LayoutContext } from "../components/context/LayoutContext";
+import { LayoutContext, User } from "../components/context/LayoutContext";
 import { prisma } from "../lib/prisma";
 import { GetServerSideProps } from "next";
 
@@ -90,9 +90,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
 
   if (!session) {
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
+      props: {
+        userId: "",
       },
     };
   }
@@ -116,14 +115,13 @@ type HomeProps = {
 };
 
 const Home = ({ userId }: HomeProps) => {
-  const { profileMenu, setProfileId } = useContext(LayoutContext);
+  const { profileMenu, setProfileId, setUserLoggedIn } =
+    useContext(LayoutContext);
   const { data: session, status } = useSession();
 
   const signInWithGoogle = () => {
     // Perform sign in
-    signIn("google", {
-      callbackUrl: window.location.href,
-    });
+    signIn("google");
   };
 
   useEffect(() => {
@@ -131,7 +129,10 @@ const Home = ({ userId }: HomeProps) => {
   }, []);
 
   useEffect(() => {
-    session && console.log(session);
+    if (session && session.user) {
+      const user = new User(session.user?.name, session.user?.image);
+      setUserLoggedIn(user);
+    }
   }, [session]);
 
   return (
@@ -159,9 +160,7 @@ const Home = ({ userId }: HomeProps) => {
 
           <Image src="/logo.svg" alt="logo" width="60" height="60" />
           {session ? (
-            <ProfileButton
-              image={session?.user?.image ? session?.user?.image : ""}
-            />
+            <ProfileButton />
           ) : (
             <button
               onClick={signInWithGoogle}

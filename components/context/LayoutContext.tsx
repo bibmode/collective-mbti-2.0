@@ -24,9 +24,32 @@ type LayoutContextType = {
   setEditModal: React.Dispatch<React.SetStateAction<boolean>>;
   profileId: string;
   setProfileId: React.Dispatch<React.SetStateAction<string>>;
+  userLoggedIn: User | null;
+  setUserLoggedIn: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 export const LayoutContext = createContext({} as LayoutContextType);
+
+export class User {
+  name: string | null | undefined = "";
+  image: string | null | undefined = "";
+
+  constructor(
+    name: string | null | undefined,
+    image: string | null | undefined
+  ) {
+    this.name = name;
+    this.image = image;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getImage() {
+    return this.image;
+  }
+}
 
 const LayoutContextProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,6 +59,7 @@ const LayoutContextProvider = ({ children }: Props) => {
   const [editModal, setEditModal] = useState<boolean>(false);
   const [underlay, setUnderlay] = useState(false);
   const [profileId, setProfileId] = useState<string>("");
+  const [userLoggedIn, setUserLoggedIn] = useState<User | null>(null);
 
   const closeProfileMenu = () => {
     if (profileMenu) setProfileMenu(false);
@@ -66,6 +90,8 @@ const LayoutContextProvider = ({ children }: Props) => {
         setEditModal,
         profileId,
         setProfileId,
+        userLoggedIn,
+        setUserLoggedIn,
       }}
     >
       <div className="bg-blue-50/20 relative">
