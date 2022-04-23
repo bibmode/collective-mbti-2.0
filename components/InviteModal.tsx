@@ -22,7 +22,7 @@ const InviteModal = () => {
 
   return (
     <motion.div
-      className="fixed z-40"
+      className="fixed z-[70]"
       initial={{ y: -1000 }}
       animate={{ y: 0 }}
       exit={{ y: -1000 }}

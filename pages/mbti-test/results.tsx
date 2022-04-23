@@ -8,7 +8,7 @@ import Traits from "../../components/Traits";
 import Typology from "../../components/Typology";
 import TypologyBar from "../../components/TypologyBar";
 import avatar from "../../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
-import mbtiCalculator from "../../utils/mbtiCalculator";
+import mbtiCalculator from "../../hooks/mbtiCalculator";
 
 const positiveTraits = [
   {

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import EditModal from "../EditModal";
 import InviteModal from "../InviteModal";
 import PhoneMenu from "../PhoneMenu";
+import { User } from "../../utils/User";
 
 type Props = {
   children: React.ReactNode;
@@ -29,27 +30,6 @@ type LayoutContextType = {
 };
 
 export const LayoutContext = createContext({} as LayoutContextType);
-
-export class User {
-  name: string | null | undefined = "";
-  image: string | null | undefined = "";
-
-  constructor(
-    name: string | null | undefined,
-    image: string | null | undefined
-  ) {
-    this.name = name;
-    this.image = image;
-  }
-
-  getName() {
-    return this.name;
-  }
-
-  getImage() {
-    return this.image;
-  }
-}
 
 const LayoutContextProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -104,7 +84,7 @@ const LayoutContextProvider = ({ children }: Props) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="h-screen w-screen bg-gray-800/70 fixed z-30"
+              className="h-screen w-screen bg-gray-800/70 fixed z-[60]"
             ></motion.div>
           )}
         </AnimatePresence>

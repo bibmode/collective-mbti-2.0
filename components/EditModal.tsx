@@ -6,7 +6,7 @@ import { LayoutContext } from "./context/LayoutContext";
 import { motion } from "framer-motion";
 
 const EditModal = () => {
-  const { setEditModal } = useContext(LayoutContext);
+  const { setEditModal, userLoggedIn } = useContext(LayoutContext);
 
   const closeModal = () => {
     setEditModal(false);
@@ -14,7 +14,7 @@ const EditModal = () => {
 
   return (
     <motion.div
-      className="fixed z-40"
+      className="fixed z-[70]"
       initial={{ y: -1000 }}
       animate={{ y: 0 }}
       exit={{ y: -1000 }}
@@ -63,7 +63,11 @@ const EditModal = () => {
               className="absolute top-[50%] -translate-y-[50%] left-[50%] -translate-x-[50%] z-10"
             />
             <Image
-              src="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
+              src={
+                userLoggedIn
+                  ? `${userLoggedIn.getImage()}`
+                  : "https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
+              }
               alt="user image"
               layout="fill"
               objectFit="cover"
@@ -87,7 +91,9 @@ const EditModal = () => {
             type="text"
             name="editName"
             id="editName"
-            defaultValue="Genevieve Navales"
+            defaultValue={
+              userLoggedIn ? `${userLoggedIn.getName()}` : "Genevieve Navales"
+            }
           />
         </div>
 

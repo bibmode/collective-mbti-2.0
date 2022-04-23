@@ -11,8 +11,8 @@ import { LayoutContext } from "../../components/context/LayoutContext";
 import NavBar from "../../components/NavBar";
 
 import { selfQuestions } from "../../data/selftest-questions";
-import mbtiCalculator from "../../utils/mbtiCalculator";
-import testShuffle from "../../utils/testShuffle";
+import mbtiCalculator from "../../hooks/mbtiCalculator";
+import testShuffle from "../../hooks/testShuffle";
 
 type Option = {
   cognitiveFunction: string;

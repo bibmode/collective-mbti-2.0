@@ -15,9 +15,10 @@ import { getSession, signIn, useSession } from "next-auth/react";
 import { useContext, useEffect } from "react";
 import ProfileButton from "../components/ProfileButton";
 import ProfileMenu from "../components/ProfileMenu";
-import { LayoutContext, User } from "../components/context/LayoutContext";
+import { LayoutContext } from "../components/context/LayoutContext";
 import { prisma } from "../lib/prisma";
 import { GetServerSideProps } from "next";
+import { User } from "../utils/User";
 
 const sampleResult = [
   {

@@ -13,7 +13,7 @@ import avatar3 from "../../public/avatars/casual-life-3d-avatar-with-redhead-wom
 import avatar4 from "../../public/avatars/casual-life-3d-avatar-with-woman-in-black-hat-and-pink-shirt.png";
 
 import { inviteQuestions } from "../../data/invite-questions";
-import testShuffle from "../../utils/testShuffle";
+import testShuffle from "../../hooks/testShuffle";
 import NavBar from "../../components/NavBar";
 import { LayoutContext } from "../../components/context/LayoutContext";
 

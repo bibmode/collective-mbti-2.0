@@ -47,6 +47,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  
+  typology      Typology[]
+  selfType      SelfType?
 }
 
 model VerificationToken {
@@ -55,4 +58,69 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Typology {
+  id            String    @id @default(cuid())
+  name          String 
+  relationship  String 
+  comment       String? 
+  createdDate   DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  results       Result[]
+}
+
+model SelfType {
+  id            String    @id @default(cuid())
+  createdDate   DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  results       Result[]
+}
+
+model Result {
+  id                    String    @id @default(cuid())
+  mbtiType              String 
+  choices               String[]
+
+  typology              Typology @relation(fields: [typologyId], references: [id])
+  typologyId            String
+  selfType              SelfType @relation(fields: [selfTypeId], references: [id])
+  selfTypeId            String
+
+  cognitiveFunctions    CognitiveFunctions    @relation(fields: [cognitiveId], references: [id], onDelete: Cascade)
+  cognitiveId           String
+  fourLetters           FourLetters    @relation(fields: [fourLettersId], references: [id], onDelete: Cascade)
+  fourLettersId         String
+}
+
+model CognitiveFunctions {
+  id                    String    @id @default(cuid())
+  userResult            Result?
+  ne                    Int 
+  ni                    Int 
+  se                    Int 
+  si                    Int 
+  te                    Int 
+  ti                    Int 
+  fe                    Int 
+  fi                    Int  
+}
+
+model FourLetters {
+  id                    String    @id @default(cuid())
+  userResult            Result?
+  extroversion          Int 
+  introversion          Int 
+  sensing               Int 
+  intuition             Int 
+  thinking              Int 
+  feeling               Int 
+  perceiving            Int 
+  judging               Int 
 }
