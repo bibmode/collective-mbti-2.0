@@ -60,7 +60,7 @@ export default async function handler(
     console.log(mbtiType, choices, userId);
 
     try {
-      const newSelfTest = await prisma.selfType.create({
+      await prisma.selfType.create({
         data: {
           user: {
             connect: {
@@ -100,8 +100,6 @@ export default async function handler(
         },
       });
 
-      await console.log(newSelfTest);
-
       res.status(200).json({ message: "message added successfully" });
     } catch (error) {
       res.status(500).json({ message: `failed to send message ${error}` });
@@ -109,8 +107,7 @@ export default async function handler(
   } else if (req.method === "GET") {
     const { userId } = req.query;
 
-    console.log(userId);
-    const user = await prisma.selfType.findUnique({
+    const foundData = await prisma.selfType.findUnique({
       where: {
         userId: `${userId}`,
       },
@@ -119,9 +116,52 @@ export default async function handler(
       },
     });
 
-    res.status(200).json(user);
+    res.status(200).json(foundData);
+  } else if (req.method === "PATCH") {
+    const { mbtiType, choices, userId, cognitiveFunctions, fourLetters } =
+      req.body;
+
+    await prisma.selfType.update({
+      where: {
+        userId: `${userId}`,
+      },
+      data: {
+        results: {
+          update: {
+            mbtiType: mbtiType,
+            choices: choices,
+            cognitiveFunctions: {
+              update: {
+                ne: cognitiveFunctions.Ne,
+                ni: cognitiveFunctions.Ni,
+                se: cognitiveFunctions.Se,
+                si: cognitiveFunctions.Si,
+                te: cognitiveFunctions.Te,
+                ti: cognitiveFunctions.Ti,
+                fe: cognitiveFunctions.Fe,
+                fi: cognitiveFunctions.Fi,
+              },
+            },
+            fourLetters: {
+              update: {
+                extroversion: fourLetters.Extroverted,
+                introversion: fourLetters.Introverted,
+                sensing: fourLetters.Sensor,
+                intuition: fourLetters.Intuitive,
+                thinking: fourLetters.Thinking,
+                feeling: fourLetters.Feeling,
+                perceiving: fourLetters.Perceiving,
+                judging: fourLetters.Judging,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    res.status(200).json({ message: "self test updated successfully" });
   } else {
-    res.setHeader("Allow", ["POST", "GET"]);
+    res.setHeader("Allow", ["POST", "GET", "PATCH"]);
     res
       .status(405)
       .json({ message: `HTTP method ${req.method} is not supported.` });

@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, {
   useContext,
@@ -32,6 +33,8 @@ const SelfTest = () => {
     new Array(64).fill(null)
   );
   const [progress, setProgress] = useState<number>(0);
+
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -103,8 +106,10 @@ const SelfTest = () => {
     updateProgress();
   }, [answers]);
 
-  const testFunctionForGetRequest = async () => {
+  const getExistingSelfType = async () => {
     const userId = userLoggedIn?.getId();
+
+    console.log(session, session?.userId);
 
     const userDetails = await axios.get("/api/mbti-test/self-test", {
       params: {
@@ -113,7 +118,13 @@ const SelfTest = () => {
     });
 
     const res = await userDetails;
-    console.log(res);
+
+    if (res.data === "") {
+      console.log("no data found");
+      return false;
+    }
+
+    return true;
   };
 
   const submitAnswers = async () => {
@@ -121,7 +132,27 @@ const SelfTest = () => {
     const userId = userLoggedIn?.getId();
     console.log(results, userId, answers);
 
-    const sendResult = await axios.post("/api/mbti-test/self-test", {
+    const doesSelfTypeExists: boolean = await getExistingSelfType();
+    console.log(doesSelfTypeExists);
+    if (!doesSelfTypeExists) {
+      const sendResult = await axios.post("/api/mbti-test/self-test", {
+        mbtiType: results.mbti,
+        choices: answers,
+        userId: userId,
+        cognitiveFunctions: results.cognitiveFunctionsUnsorted,
+        fourLetters: results.fourLetters,
+      });
+
+      if (sendResult.status !== 200) {
+        console.log("epic fail");
+      }
+
+      await console.log(sendResult);
+
+      return;
+    }
+
+    const updateResult = await axios.patch("/api/mbti-test/self-test", {
       mbtiType: results.mbti,
       choices: answers,
       userId: userId,
@@ -129,11 +160,11 @@ const SelfTest = () => {
       fourLetters: results.fourLetters,
     });
 
-    if (sendResult.status !== 200) {
+    if (updateResult.status !== 200) {
       console.log("epic fail");
     }
 
-    await console.log(sendResult);
+    await console.log(updateResult);
   };
 
   return (
@@ -146,10 +177,7 @@ const SelfTest = () => {
         />
 
         {/* guidelines */}
-        <div
-          onClick={testFunctionForGetRequest}
-          className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg max-w-[691px]"
-        >
+        <div className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg max-w-[691px]">
           <h2 className="text-center text-lg mb-2 font-semibold">
             Guidelines for this test
           </h2>
