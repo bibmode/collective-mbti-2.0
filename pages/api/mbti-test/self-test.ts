@@ -40,7 +40,7 @@ type SelfTypeProps = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const session = await getSession({ req });
 
@@ -106,8 +106,22 @@ export default async function handler(
     } catch (error) {
       res.status(500).json({ message: `failed to send message ${error}` });
     }
+  } else if (req.method === "GET") {
+    const { userId } = req.query;
+
+    console.log(userId);
+    const user = await prisma.selfType.findUnique({
+      where: {
+        userId: `${userId}`,
+      },
+      include: {
+        results: true,
+      },
+    });
+
+    res.status(200).json(user);
   } else {
-    res.setHeader("Allow", ["POST"]);
+    res.setHeader("Allow", ["POST", "GET"]);
     res
       .status(405)
       .json({ message: `HTTP method ${req.method} is not supported.` });

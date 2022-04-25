@@ -103,6 +103,19 @@ const SelfTest = () => {
     updateProgress();
   }, [answers]);
 
+  const testFunctionForGetRequest = async () => {
+    const userId = userLoggedIn?.getId();
+
+    const userDetails = await axios.get("/api/mbti-test/self-test", {
+      params: {
+        userId: `${userId}`,
+      },
+    });
+
+    const res = await userDetails;
+    console.log(res);
+  };
+
   const submitAnswers = async () => {
     const results = await mbtiCalculator(answers);
     const userId = userLoggedIn?.getId();
@@ -133,7 +146,10 @@ const SelfTest = () => {
         />
 
         {/* guidelines */}
-        <div className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg max-w-[691px]">
+        <div
+          onClick={testFunctionForGetRequest}
+          className="bg-white rounded-3xl mt-4 px-6 py-8 drop-shadow-lg max-w-[691px]"
+        >
           <h2 className="text-center text-lg mb-2 font-semibold">
             Guidelines for this test
           </h2>
