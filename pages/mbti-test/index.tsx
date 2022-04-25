@@ -15,6 +15,7 @@ import NavBar from "../../components/NavBar";
 import { selfQuestions } from "../../data/selftest-questions";
 import mbtiCalculator from "../../hooks/mbtiCalculator";
 import testShuffle from "../../hooks/testShuffle";
+import { User } from "../../utils/User";
 
 type Option = {
   cognitiveFunction: string;
@@ -22,7 +23,8 @@ type Option = {
 };
 
 const SelfTest = () => {
-  const { closeProfileMenu, userLoggedIn } = useContext(LayoutContext);
+  const { closeProfileMenu, userLoggedIn, setUserLoggedIn } =
+    useContext(LayoutContext);
   const myRef = useRef<HTMLInputElement>(null);
   const [questionPage, setQuestionPage] = useState<number>(0);
   const [questions, setQuestions] = useState<Option[][][] | null>(null);
@@ -35,6 +37,18 @@ const SelfTest = () => {
   const [progress, setProgress] = useState<number>(0);
 
   const { data: session, status } = useSession();
+
+  // set userloggedin if online
+  useEffect(() => {
+    if (session && session.user && session.userId) {
+      const user = new User(
+        session.user?.name,
+        session.user?.image,
+        session.userId
+      );
+      setUserLoggedIn(user);
+    }
+  }, [session]);
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -107,9 +121,9 @@ const SelfTest = () => {
   }, [answers]);
 
   const getExistingSelfType = async () => {
-    const userId = userLoggedIn?.getId();
-
-    console.log(session, session?.userId);
+    const userId = userLoggedIn
+      ? userLoggedIn?.getId()
+      : "cl2ezcbs3000009mpeq4o7yp3";
 
     const userDetails = await axios.get("/api/mbti-test/self-test", {
       params: {
