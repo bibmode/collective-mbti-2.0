@@ -104,14 +104,16 @@ const SelfTest = () => {
   }, [answers]);
 
   const submitAnswers = async () => {
-    const results = mbtiCalculator(answers);
+    const results = await mbtiCalculator(answers);
     const userId = userLoggedIn?.getId();
     console.log(results, userId, answers);
 
     const sendResult = await axios.post("/api/mbti-test/self-test", {
-      mbtiType: "entp",
-      choices: ["ne", "ti", "fe", "si"],
-      userId: "cl2eokhxc0006z8i4eyj0xsj3",
+      mbtiType: results.mbti,
+      choices: answers,
+      userId: userId,
+      cognitiveFunctions: results.cognitiveFunctionsUnsorted,
+      fourLetters: results.fourLetters,
     });
 
     if (sendResult.status !== 200) {

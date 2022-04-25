@@ -13,6 +13,17 @@ type FourLetters = {
   Perceiving: number;
 };
 
+type CognitiveFunctions = {
+  Ne: number;
+  Ni: number;
+  Se: number;
+  Si: number;
+  Te: number;
+  Ti: number;
+  Fe: number;
+  Fi: number;
+};
+
 class Calculator {
   choices: string[];
   multiplier: number;
@@ -190,7 +201,10 @@ const mbtiCalculator = (userChoices: string[]) => {
   const fourLetters: FourLetters = userAnswer.getFourLetters();
   const cognitiveFunctions: any[][] = userAnswer.sortFuctions();
 
-  return { mbti, fourLetters, cognitiveFunctions };
+  const cognitiveFunctionsUnsorted: CognitiveFunctions =
+    userAnswer.getCognitiveFunctions();
+
+  return { mbti, fourLetters, cognitiveFunctions, cognitiveFunctionsUnsorted };
 };
 
 export default mbtiCalculator;

@@ -8,10 +8,34 @@ type Data = {
   message: string;
 };
 
+type FourLetters = {
+  Extroverted: number;
+  Feeling: number;
+  Introverted: number;
+  Intuitive: number;
+  Judging: number;
+  Perceiving: number;
+  Sensor: number;
+  Thinking: number;
+};
+
+type CognitiveFunctions = {
+  Ne: number;
+  Ni: number;
+  Se: number;
+  Si: number;
+  Te: number;
+  Ti: number;
+  Fe: number;
+  Fi: number;
+};
+
 type SelfTypeProps = {
   mbtiType: string;
   choices: string[];
   userId: string;
+  cognitiveFunctions: CognitiveFunctions;
+  fourLetters: FourLetters;
 };
 
 export default async function handler(
@@ -25,7 +49,13 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
-    const { mbtiType, choices, userId }: SelfTypeProps = req.body;
+    const {
+      mbtiType,
+      choices,
+      userId,
+      cognitiveFunctions,
+      fourLetters,
+    }: SelfTypeProps = req.body;
 
     console.log(mbtiType, choices, userId);
 
@@ -43,26 +73,26 @@ export default async function handler(
               choices: choices,
               cognitiveFunctions: {
                 create: {
-                  ne: 22,
-                  ni: 22,
-                  se: 22,
-                  si: 22,
-                  te: 22,
-                  ti: 22,
-                  fe: 22,
-                  fi: 22,
+                  ne: cognitiveFunctions.Ne,
+                  ni: cognitiveFunctions.Ni,
+                  se: cognitiveFunctions.Se,
+                  si: cognitiveFunctions.Si,
+                  te: cognitiveFunctions.Te,
+                  ti: cognitiveFunctions.Ti,
+                  fe: cognitiveFunctions.Fe,
+                  fi: cognitiveFunctions.Fi,
                 },
               },
               fourLetters: {
                 create: {
-                  extroversion: 23,
-                  introversion: 23,
-                  sensing: 23,
-                  intuition: 23,
-                  thinking: 23,
-                  feeling: 23,
-                  perceiving: 23,
-                  judging: 23,
+                  extroversion: fourLetters.Extroverted,
+                  introversion: fourLetters.Introverted,
+                  sensing: fourLetters.Sensor,
+                  intuition: fourLetters.Intuitive,
+                  thinking: fourLetters.Thinking,
+                  feeling: fourLetters.Feeling,
+                  perceiving: fourLetters.Perceiving,
+                  judging: fourLetters.Judging,
                 },
               },
             },
