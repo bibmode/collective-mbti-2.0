@@ -27,70 +27,42 @@ export default async function handler(
   if (req.method === "POST") {
     const { mbtiType, choices, userId }: SelfTypeProps = req.body;
 
+    console.log(mbtiType, choices, userId);
+
     try {
-      // connect to user
-      await prisma.selfType.update({
-        where: {
-          userId: userId,
-        },
+      const newSelfTest = await prisma.selfType.create({
         data: {
-          // TODO: connect self test result to user
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
           results: {
-            upsert: {
-              create: {
-                mbtiType,
-                choices,
-                cognitiveFunctions: {
-                  create: {
-                    ne: 22,
-                    ni: 22,
-                    se: 22,
-                    si: 22,
-                    te: 22,
-                    ti: 22,
-                    fe: 22,
-                    fi: 22,
-                  },
-                },
-                fourLetters: {
-                  create: {
-                    extroversion: 22,
-                    introversion: 22,
-                    intuition: 22,
-                    sensing: 22,
-                    thinking: 22,
-                    feeling: 22,
-                    perceiving: 22,
-                    judging: 22,
-                  },
+            create: {
+              mbtiType: mbtiType,
+              choices: choices,
+              cognitiveFunctions: {
+                create: {
+                  ne: 22,
+                  ni: 22,
+                  se: 22,
+                  si: 22,
+                  te: 22,
+                  ti: 22,
+                  fe: 22,
+                  fi: 22,
                 },
               },
-              update: {
-                mbtiType,
-                choices,
-                cognitiveFunctions: {
-                  update: {
-                    ne: 22,
-                    ni: 22,
-                    se: 22,
-                    si: 22,
-                    te: 22,
-                    ti: 22,
-                    fe: 22,
-                    fi: 22,
-                  },
-                },
-                fourLetters: {
-                  update: {
-                    extroversion: 22,
-                    introversion: 22,
-                    intuition: 22,
-                    sensing: 22,
-                    thinking: 22,
-                    feeling: 22,
-                    perceiving: 22,
-                    judging: 22,
-                  },
+              fourLetters: {
+                create: {
+                  extroversion: 23,
+                  introversion: 23,
+                  sensing: 23,
+                  intuition: 23,
+                  thinking: 23,
+                  feeling: 23,
+                  perceiving: 23,
+                  judging: 23,
                 },
               },
             },
@@ -98,9 +70,11 @@ export default async function handler(
         },
       });
 
+      await console.log(newSelfTest);
+
       res.status(200).json({ message: "message added successfully" });
     } catch (error) {
-      res.status(500).json({ message: "failed to send message" });
+      res.status(500).json({ message: `failed to send message ${error}` });
     }
   } else {
     res.setHeader("Allow", ["POST"]);

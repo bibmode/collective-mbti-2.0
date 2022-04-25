@@ -89,9 +89,9 @@ model Result {
   choices               String[]
 
   typology              Typology? @relation(fields: [typologyId], references: [id])
-  typologyId            String
+  typologyId            String?
   selfType              SelfType? @relation(fields: [selfTypeId], references: [id])
-  selfTypeId            String
+  selfTypeId            String?
 
   cognitiveFunctions    CognitiveFunctions    @relation(fields: [cognitiveId], references: [id], onDelete: Cascade)
   cognitiveId           String

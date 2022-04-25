@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import axios from "axios";
 import Image from "next/image";
 import React, {
   useContext,
@@ -20,7 +21,7 @@ type Option = {
 };
 
 const SelfTest = () => {
-  const { closeProfileMenu } = useContext(LayoutContext);
+  const { closeProfileMenu, userLoggedIn } = useContext(LayoutContext);
   const myRef = useRef<HTMLInputElement>(null);
   const [questionPage, setQuestionPage] = useState<number>(0);
   const [questions, setQuestions] = useState<Option[][][] | null>(null);
@@ -102,9 +103,22 @@ const SelfTest = () => {
     updateProgress();
   }, [answers]);
 
-  const submitAnswers = () => {
+  const submitAnswers = async () => {
     const results = mbtiCalculator(answers);
-    console.log(results);
+    const userId = userLoggedIn?.getId();
+    console.log(results, userId, answers);
+
+    const sendResult = await axios.post("/api/mbti-test/self-test", {
+      mbtiType: "entp",
+      choices: ["ne", "ti", "fe", "si"],
+      userId: "cl2eokhxc0006z8i4eyj0xsj3",
+    });
+
+    if (sendResult.status !== 200) {
+      console.log("epic fail");
+    }
+
+    await console.log(sendResult);
   };
 
   return (

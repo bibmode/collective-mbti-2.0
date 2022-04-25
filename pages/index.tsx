@@ -131,7 +131,7 @@ const Home = ({ userId }: HomeProps) => {
 
   useEffect(() => {
     if (session && session.user) {
-      const user = new User(session.user?.name, session.user?.image);
+      const user = new User(session.user?.name, session.user?.image, userId);
       setUserLoggedIn(user);
     }
   }, [session]);
