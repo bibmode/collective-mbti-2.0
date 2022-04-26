@@ -13,12 +13,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { getSession, signIn, useSession } from "next-auth/react";
 import { useContext, useEffect } from "react";
-import ProfileButton from "../components/ProfileButton";
+import ProfileButton from "../components/buttons/ProfileButton";
 import ProfileMenu from "../components/ProfileMenu";
 import { LayoutContext } from "../components/context/LayoutContext";
 import { prisma } from "../lib/prisma";
 import { GetServerSideProps } from "next";
 import { User } from "../utils/User";
+import SignInButton from "../components/buttons/SignInButton";
 
 const sampleResult = [
   {
@@ -86,55 +87,43 @@ const sampleTraits = [
   },
 ];
 
-export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
-  const session = await getSession(ctx);
+// export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+//   const session = await getSession(ctx);
 
-  if (!session) {
-    return {
-      props: {
-        userId: "",
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       props: {
+//         userId: "",
+//       },
+//     };
+//   }
 
-  // find user
-  const userRes = await prisma.user.findFirst({
-    where: { email: session.user?.email },
-  });
+//   // find user
+//   const userRes = await prisma.user.findFirst({
+//     where: { email: session.user?.email },
+//   });
 
-  const userDetails = await JSON.parse(JSON.stringify(userRes));
+//   const userDetails = await JSON.parse(JSON.stringify(userRes));
 
-  return {
-    props: {
-      userId: await userDetails.id,
-    },
-  };
-};
+//   return {
+//     props: {
+//       userId: await userDetails.id,
+//     },
+//   };
+// };
 
 type HomeProps = {
   userId: string;
 };
 
-const Home = ({ userId }: HomeProps) => {
+const Home = () => {
   const { profileMenu, setProfileId, setUserLoggedIn } =
     useContext(LayoutContext);
   const { data: session, status } = useSession();
 
-  const signInWithGoogle = () => {
-    // Perform sign in
-    signIn("google");
-  };
-
   useEffect(() => {
-    if (userId) setProfileId(userId);
-  }, []);
-
-  useEffect(() => {
-    if (session && session.user) {
-      const user = new User(session.user?.name, session.user?.image, userId);
-      setUserLoggedIn(user);
-    }
-  }, [session]);
+    console.log(status);
+  }, [status]);
 
   return (
     <div className="overflow-x-hidden">
@@ -160,19 +149,7 @@ const Home = ({ userId }: HomeProps) => {
           {profileMenu && <ProfileMenu />}
 
           <Image src="/logo.svg" alt="logo" width="60" height="60" />
-          {session ? (
-            <ProfileButton />
-          ) : (
-            <button
-              onClick={signInWithGoogle}
-              className="flex items-center bg-gray-900 rounded-full py-3 px-4 hover:scale-105 transition-all duration-300"
-            >
-              <span className="pr-2 text-white text-sm relative z-10">
-                Continue with
-              </span>
-              <Icon className="text-xl" icon="flat-color-icons:google" />
-            </button>
-          )}
+          {status === "authenticated" ? <ProfileButton /> : <SignInButton />}
         </nav>
 
         <header className="relative lg:mt-14 lg:min-h-[800px]">

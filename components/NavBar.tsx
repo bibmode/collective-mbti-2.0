@@ -1,10 +1,12 @@
 import { Icon } from "@iconify/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { LayoutContext } from "./context/LayoutContext";
-import ProfileButton from "./ProfileButton";
+import ProfileButton from "./buttons/ProfileButton";
 import ProfileMenu from "./ProfileMenu";
+import SignInButton from "./buttons/SignInButton";
 
 type Props = {
   image: string;
@@ -13,6 +15,8 @@ type Props = {
 const NavBar = ({ image, navType }: Props) => {
   const { setInviteModal, profileMenu, setProfileMenu, setPhoneMenu } =
     useContext(LayoutContext);
+
+  const { data: session, status } = useSession();
 
   const toggleInvite = () => {
     setInviteModal(true);
@@ -74,7 +78,7 @@ const NavBar = ({ image, navType }: Props) => {
       )}
 
       {/* profile button */}
-      <ProfileButton image={image} />
+      {status === "authenticated" ? <ProfileButton /> : <SignInButton />}
     </nav>
   );
 };

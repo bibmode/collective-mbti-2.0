@@ -6,6 +6,7 @@ import EditModal from "../EditModal";
 import InviteModal from "../InviteModal";
 import PhoneMenu from "../PhoneMenu";
 import { User } from "../../utils/User";
+import { Results } from "../../types/result-types";
 
 type Props = {
   children: React.ReactNode;
@@ -27,6 +28,8 @@ type LayoutContextType = {
   setProfileId: React.Dispatch<React.SetStateAction<string>>;
   userLoggedIn: User | null;
   setUserLoggedIn: React.Dispatch<React.SetStateAction<User | null>>;
+  visitorResults: Results | null;
+  setVisitorResults: React.Dispatch<React.SetStateAction<Results | null>>;
 };
 
 export const LayoutContext = createContext({} as LayoutContextType);
@@ -40,6 +43,7 @@ const LayoutContextProvider = ({ children }: Props) => {
   const [underlay, setUnderlay] = useState(false);
   const [profileId, setProfileId] = useState<string>("");
   const [userLoggedIn, setUserLoggedIn] = useState<User | null>(null);
+  const [visitorResults, setVisitorResults] = useState<Results | null>(null);
 
   const closeProfileMenu = () => {
     if (profileMenu) setProfileMenu(false);
@@ -72,6 +76,8 @@ const LayoutContextProvider = ({ children }: Props) => {
         setProfileId,
         userLoggedIn,
         setUserLoggedIn,
+        visitorResults,
+        setVisitorResults,
       }}
     >
       <div className="bg-blue-50/20 relative">

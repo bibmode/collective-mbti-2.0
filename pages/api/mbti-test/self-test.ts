@@ -3,32 +3,33 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { prisma } from "../../../lib/prisma";
+import { CognitiveFunctions, FourLetters } from "../../../types/result-types";
 
 type Data = {
   message: string;
 };
 
-type FourLetters = {
-  Extroverted: number;
-  Feeling: number;
-  Introverted: number;
-  Intuitive: number;
-  Judging: number;
-  Perceiving: number;
-  Sensor: number;
-  Thinking: number;
-};
+// type FourLetters = {
+//   Extroverted: number;
+//   Feeling: number;
+//   Introverted: number;
+//   Intuitive: number;
+//   Judging: number;
+//   Perceiving: number;
+//   Sensor: number;
+//   Thinking: number;
+// };
 
-type CognitiveFunctions = {
-  Ne: number;
-  Ni: number;
-  Se: number;
-  Si: number;
-  Te: number;
-  Ti: number;
-  Fe: number;
-  Fi: number;
-};
+// type CognitiveFunctions = {
+//   Ne: number;
+//   Ni: number;
+//   Se: number;
+//   Si: number;
+//   Te: number;
+//   Ti: number;
+//   Fe: number;
+//   Fi: number;
+// };
 
 type SelfTypeProps = {
   mbtiType: string;
@@ -107,23 +108,31 @@ export default async function handler(
   } else if (req.method === "GET") {
     const { userId } = req.query;
 
-    const foundData = await prisma.selfType.findUnique({
-      where: {
-        userId: `${userId}`,
-      },
-      include: {
-        results: true,
-      },
-    });
+    console.log(userId);
+    try {
+      const foundData = await prisma.selfType.findUnique({
+        where: {
+          userId: `${userId}`,
+        },
+        include: {
+          results: true,
+        },
+      });
 
-    res.status(200).json(foundData);
+      console.log(foundData);
+
+      res.status(200).json(foundData);
+    } catch (error) {
+      console.log("hello");
+      res.status(500).json({ message: `failed to send message ${error}` });
+    }
   } else if (req.method === "PATCH") {
     const { mbtiType, choices, userId, cognitiveFunctions, fourLetters } =
       req.body;
 
     await prisma.selfType.update({
       where: {
-        userId: `${userId}`,
+        userId: userId,
       },
       data: {
         results: {

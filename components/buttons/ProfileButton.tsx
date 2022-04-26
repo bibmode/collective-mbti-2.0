@@ -1,22 +1,21 @@
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useContext, useEffect } from "react";
-import { LayoutContext } from "./context/LayoutContext";
+import { LayoutContext } from "../context/LayoutContext";
 
 const ProfileButton = () => {
-  const { setProfileMenu, userLoggedIn } = useContext(LayoutContext);
+  const { setProfileMenu } = useContext(LayoutContext);
+
+  const { data: session, status } = useSession();
 
   const openProfileMenu = () => {
     setProfileMenu(true);
   };
 
-  useEffect(() => {
-    console.log(userLoggedIn);
-  }, [userLoggedIn]);
-
   return (
     <div className="hidden md:flex items-center">
       <p className="text-[15px] max-w-[100px] mr-3 text-right leading-tight font-semibold text-gray-700 uppercase">
-        {userLoggedIn && userLoggedIn?.getName()}
+        {session?.user.name}
       </p>
       <button
         onClick={openProfileMenu}
@@ -24,11 +23,7 @@ const ProfileButton = () => {
         className="relative border-2 border-gray-800 hover:border-blue-500 transition-all duration-300 h-12 w-12 rounded-full overflow-hidden"
       >
         <Image
-          src={`${
-            userLoggedIn
-              ? userLoggedIn?.getImage()
-              : "https://lh3.googleusercontent.com/a-/AOh14GjOL-QU8oc6GhbuSqK06SIKHHq978E4MxSWbAyWug=s96-c"
-          }`}
+          src={`${session?.user.image}`}
           alt="user image"
           layout="fill"
           objectFit="cover"

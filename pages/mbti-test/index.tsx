@@ -15,6 +15,7 @@ import NavBar from "../../components/NavBar";
 import { selfQuestions } from "../../data/selftest-questions";
 import mbtiCalculator from "../../hooks/mbtiCalculator";
 import testShuffle from "../../hooks/testShuffle";
+import { Results } from "../../types/result-types";
 import { User } from "../../utils/User";
 
 type Option = {
@@ -23,7 +24,7 @@ type Option = {
 };
 
 const SelfTest = () => {
-  const { closeProfileMenu, userLoggedIn, setUserLoggedIn } =
+  const { closeProfileMenu, visitorResults, setVisitorResults } =
     useContext(LayoutContext);
   const myRef = useRef<HTMLInputElement>(null);
   const [questionPage, setQuestionPage] = useState<number>(0);
@@ -38,17 +39,9 @@ const SelfTest = () => {
 
   const { data: session, status } = useSession();
 
-  // set userloggedin if online
   useEffect(() => {
-    if (session && session.user && session.userId) {
-      const user = new User(
-        session.user?.name,
-        session.user?.image,
-        session.userId
-      );
-      setUserLoggedIn(user);
-    }
-  }, [session]);
+    console.log(status);
+  }, [status]);
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -120,17 +113,12 @@ const SelfTest = () => {
     updateProgress();
   }, [answers]);
 
-  const getExistingSelfType = async () => {
-    const userId = userLoggedIn
-      ? userLoggedIn?.getId()
-      : "cl2ezcbs3000009mpeq4o7yp3";
-
+  const getExistingSelfType = async (userId: string) => {
     const userDetails = await axios.get("/api/mbti-test/self-test", {
       params: {
         userId: `${userId}`,
       },
     });
-
     const res = await userDetails;
 
     if (res.data === "") {
@@ -141,31 +129,25 @@ const SelfTest = () => {
     return true;
   };
 
-  const submitAnswers = async () => {
-    const results = await mbtiCalculator(answers);
-    const userId = userLoggedIn?.getId();
-    console.log(results, userId, answers);
+  const createNewSelfType = async (results: Results, userId: string) => {
+    const sendResult = await axios.post("/api/mbti-test/self-test", {
+      mbtiType: results.mbti,
+      choices: answers,
+      userId: userId,
+      cognitiveFunctions: results.cognitiveFunctionsUnsorted,
+      fourLetters: results.fourLetters,
+    });
 
-    const doesSelfTypeExists: boolean = await getExistingSelfType();
-    console.log(doesSelfTypeExists);
-    if (!doesSelfTypeExists) {
-      const sendResult = await axios.post("/api/mbti-test/self-test", {
-        mbtiType: results.mbti,
-        choices: answers,
-        userId: userId,
-        cognitiveFunctions: results.cognitiveFunctionsUnsorted,
-        fourLetters: results.fourLetters,
-      });
-
-      if (sendResult.status !== 200) {
-        console.log("epic fail");
-      }
-
-      await console.log(sendResult);
-
-      return;
+    if (sendResult.status !== 200) {
+      console.log("epic fail");
     }
 
+    await console.log(sendResult);
+
+    return;
+  };
+
+  const updateExistingSelfType = async (results: Results, userId: string) => {
     const updateResult = await axios.patch("/api/mbti-test/self-test", {
       mbtiType: results.mbti,
       choices: answers,
@@ -179,6 +161,33 @@ const SelfTest = () => {
     }
 
     await console.log(updateResult);
+  };
+
+  const sendDataToDatabase = async (results: Results) => {
+    const userId = `${session?.userId}`;
+
+    console.log(results, userId, answers);
+
+    const doesSelfTypeExists: boolean = await getExistingSelfType(userId);
+
+    if (!doesSelfTypeExists) {
+      await createNewSelfType(results, userId);
+      return;
+    }
+
+    updateExistingSelfType(results, userId);
+    return;
+  };
+
+  const submitAnswers = async () => {
+    const results: Results = await mbtiCalculator(answers);
+
+    if (status === "authenticated") {
+      sendDataToDatabase(results);
+      return;
+    }
+
+    setVisitorResults(results);
   };
 
   return (
