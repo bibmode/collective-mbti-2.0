@@ -165,7 +165,7 @@ const ProfilePage = ({ selfType }: ProfilePageProps) => {
   }, [sectionChoice]);
 
   useEffect(() => {
-    console.log(selfType);
+    console.log("self type", selfType);
   }, []);
 
   return (

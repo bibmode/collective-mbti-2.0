@@ -4,10 +4,15 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import envelope from "../public/user images/casual-life-3d-white-envelope-with-blue-letter 1.png";
 import { LayoutContext } from "./context/LayoutContext";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 const InviteModal = () => {
+  const { data: session } = useSession();
+  const initialLink: string = `${process.env.NEXT_PUBLIC_SITE_URL}/mbti-test/${session?.userId}?called=they`;
+
   const { setInviteModal } = useContext(LayoutContext);
-  const [copyIndicator, setCopyIndicator] = useState(false);
+  const [copyIndicator, setCopyIndicator] = useState<boolean>(false);
+  const [inviteLink, setInviteLink] = useState<string>(initialLink);
 
   const linkRef = useRef<HTMLInputElement>(null);
 
@@ -18,6 +23,15 @@ const InviteModal = () => {
     setTimeout(() => {
       setCopyIndicator(false);
     }, 1500);
+  };
+
+  const handleInputChange = () => {
+    console.log("hello");
+  };
+
+  const handlePronounsPick = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const link = `${process.env.NEXT_PUBLIC_SITE_URL}/mbti-test/${session?.userId}?called=${e.target.value}`;
+    setInviteLink(link);
   };
 
   return (
@@ -53,10 +67,15 @@ const InviteModal = () => {
 
           {/* selection */}
           <div className="relative w-fit">
-            <select className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline">
-              <option value="female">She/Her</option>
-              <option value="male">He/Him</option>
-              <option value="non-binary">They/Them</option>
+            <select
+              onChange={(e) => handlePronounsPick(e)}
+              className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline"
+            >
+              <option value="they" defaultChecked>
+                They/Them
+              </option>
+              <option value="her">She/Her</option>
+              <option value="him">He/Him</option>
             </select>
 
             <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center px-2 text-white">
@@ -68,12 +87,12 @@ const InviteModal = () => {
         {/* link to send */}
         <div className="w-full relative flex bg-blue-100 px-4 py-2 rounded-full mt-6 mb-4">
           <input
+            onChange={handleInputChange}
             className="w-full focus:outline-0 bg-transparent pr-2"
             type="text"
             name="inviteModal"
             id="inviteModal"
-            value="http://localhost:3000/mbti-test/sdgdsj223d"
-            readOnly
+            value={inviteLink}
             ref={linkRef}
           />
 
