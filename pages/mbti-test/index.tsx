@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, {
   useContext,
   useEffect,
@@ -16,7 +17,6 @@ import { selfQuestions } from "../../data/selftest-questions";
 import mbtiCalculator from "../../hooks/mbtiCalculator";
 import testShuffle from "../../hooks/testShuffle";
 import { Results } from "../../types/result-types";
-import { User } from "../../utils/User";
 
 type Option = {
   cognitiveFunction: string;
@@ -38,6 +38,7 @@ const SelfTest = () => {
   const [progress, setProgress] = useState<number>(0);
 
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     console.log(status);
@@ -184,6 +185,7 @@ const SelfTest = () => {
 
     if (status === "authenticated") {
       sendDataToDatabase(results);
+      router.push(`/${session.userId}`);
       return;
     }
 

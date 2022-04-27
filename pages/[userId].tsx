@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { LayoutContext } from "../components/context/LayoutContext";
 import NavBar from "../components/NavBar";
@@ -9,8 +10,10 @@ import Results from "../components/Results";
 import Traits from "../components/Traits";
 import Typology from "../components/Typology";
 import TypologyBar from "../components/TypologyBar";
+import mbtiCalculator from "../hooks/mbtiCalculator";
 import { prisma } from "../lib/prisma";
 import avatar from "../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
+import { Results as ResultsType } from "../types/result-types";
 
 const positiveTraits = [
   {
@@ -101,7 +104,55 @@ const sampleResultLetters = [
   },
 ];
 
-const ProfilePage = () => {
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  const { userId } = context.query;
+  let selfType: ResultsType | null | undefined = null;
+
+  console.log(userId);
+
+  // find user
+  const userRes = await prisma.user.findFirst({
+    where: { id: userId },
+    include: {
+      typology: true,
+      selfType: true,
+    },
+  });
+
+  console.log(userRes);
+
+  // get self type
+  if (userRes?.selfType?.id) {
+    const selfTypeRes = await prisma.selfType.findFirst({
+      where: {
+        userId: userId,
+      },
+      include: {
+        results: true,
+      },
+    });
+
+    console.log(selfTypeRes);
+
+    if (selfTypeRes?.results?.choices) {
+      selfType = mbtiCalculator(selfTypeRes?.results?.choices);
+    }
+  }
+
+  // get typology
+
+  return {
+    props: {
+      selfType,
+    },
+  };
+};
+
+type ProfilePageProps = {
+  selfType: ResultsType | null | undefined;
+};
+
+const ProfilePage = ({ selfType }: ProfilePageProps) => {
   const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
@@ -112,6 +163,10 @@ const ProfilePage = () => {
   useEffect(() => {
     console.log(sectionChoice);
   }, [sectionChoice]);
+
+  useEffect(() => {
+    console.log(selfType);
+  }, []);
 
   return (
     <div onClick={closeProfileMenu} className="relative overflow-x-hidden">
