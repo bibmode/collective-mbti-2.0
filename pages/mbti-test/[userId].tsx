@@ -1,12 +1,6 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import avatar1 from "../../public/avatars/casual-life-3d-avatar-with-man-in-green-shirt-and-orange-hat.png";
 import avatar2 from "../../public/avatars/casual-life-3d-avatar-with-person-in-glasses-and-orange-shirt.png";
 import avatar3 from "../../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
@@ -16,6 +10,10 @@ import { inviteQuestions } from "../../data/invite-questions";
 import testShuffle from "../../hooks/testShuffle";
 import NavBar from "../../components/NavBar";
 import { LayoutContext } from "../../components/context/LayoutContext";
+import { Results } from "../../types/result-types";
+import axios from "axios";
+import { useRouter } from "next/router";
+import mbtiCalculator from "../../hooks/mbtiCalculator";
 
 type Option = {
   cognitiveFunction: string;
@@ -24,6 +22,7 @@ type Option = {
 
 const InviteTest = () => {
   const { closeProfileMenu } = useContext(LayoutContext);
+  const { query } = useRouter();
 
   const myRef = useRef<HTMLInputElement>(null);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
@@ -37,6 +36,9 @@ const InviteTest = () => {
     new Array(64).fill(null)
   );
   const [progress, setProgress] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+  const [comment, setComment] = useState<string>("this is a comment");
+  const [relationship, setRelationship] = useState<string>("friend");
 
   useEffect(() => {
     const questionsStart: Option[][][] = testShuffle({
@@ -110,13 +112,46 @@ const InviteTest = () => {
     updateProgress();
   }, [answers]);
 
-  const submitAnswers = () => {
+  const createNewTypology = async (results: Results) => {
+    const userId = query.userId;
+
+    const sendResult = await axios.post("/api/mbti-test/invite-test", {
+      mbtiType: results.mbti,
+      choices: answers,
+      cognitiveFunctions: results.cognitiveFunctionsUnsorted,
+      fourLetters: results.fourLetters,
+      userId,
+      name,
+      comment,
+      relationship,
+    });
+
+    if (sendResult.status !== 200) {
+      console.log("epic fail");
+    }
+
+    await console.log(sendResult);
+
+    return;
+  };
+
+  const submitAnswers = async () => {
+    const results: Results = await mbtiCalculator(answers);
+    createNewTypology(results);
     console.log(answers);
   };
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.trim() !== "") setOverlay(false);
-    else setOverlay(true);
+    if (e.target.value.trim() !== "") {
+      setName(e.target.value);
+      setOverlay(false);
+      return;
+    }
+    setOverlay(true);
+  };
+
+  const handleRelationship = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setRelationship(e.target.value);
   };
 
   return (
@@ -152,8 +187,13 @@ const InviteTest = () => {
               </label>
 
               <div className="relative w-fit">
-                <select className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline">
-                  <option value="friend">Friend</option>
+                <select
+                  onChange={(e) => handleRelationship(e)}
+                  className="block bg-gray-800 text-white pl-4 pr-8 py-2 ml-auto rounded-full appearance-none focus:outline-none focus:shadow-outline"
+                >
+                  <option value="friend" defaultChecked>
+                    Friend
+                  </option>
                   <option value="romantic">Romantic</option>
                   <option value="family">Family</option>
                   <option value="business">Business</option>
@@ -178,7 +218,7 @@ const InviteTest = () => {
                     type="radio"
                     id="contactChoice-0"
                     name="avatarChoice"
-                    value="email"
+                    value="https://i.pinimg.com/236x/bf/6a/eb/bf6aeb4b635873217fe411313a4e31f7.jpg"
                     className="peer hidden"
                   />
                   <label

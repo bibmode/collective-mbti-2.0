@@ -1,16 +1,17 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { prisma } from "../../../lib/prisma";
 import { CognitiveFunctions, FourLetters } from "../../../types/result-types";
 
-type SelfTypeProps = {
+type InviteTestProps = {
   mbtiType: string;
   choices: string[];
   userId: string;
   cognitiveFunctions: CognitiveFunctions;
   fourLetters: FourLetters;
+  comment: string;
+  name: string;
+  relationship: string;
 };
 
 export default async function handler(
@@ -30,18 +31,24 @@ export default async function handler(
       userId,
       cognitiveFunctions,
       fourLetters,
-    }: SelfTypeProps = req.body;
+      comment,
+      name,
+      relationship,
+    }: InviteTestProps = req.body;
 
     console.log(mbtiType, choices, userId);
 
     try {
-      await prisma.selfType.create({
+      await prisma.typology.create({
         data: {
           user: {
             connect: {
               id: userId,
             },
           },
+          comment: comment,
+          relationship: relationship,
+          name: name,
           results: {
             create: {
               mbtiType: mbtiType,
@@ -75,9 +82,9 @@ export default async function handler(
         },
       });
 
-      res.status(200).json({ message: "message added successfully" });
+      res.status(200).json({ message: "invite result added successfully" });
     } catch (error) {
-      res.status(500).json({ message: `failed to send message ${error}` });
+      res.status(500).json({ message: `failed to save result: ${error}` });
     }
   } else if (req.method === "GET") {
     const { userId } = req.query;
