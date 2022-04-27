@@ -13,7 +13,11 @@ import TypologyBar from "../components/TypologyBar";
 import mbtiCalculator from "../hooks/mbtiCalculator";
 import { prisma } from "../lib/prisma";
 import avatar from "../public/avatars/casual-life-3d-avatar-with-redhead-woman-on-pink-background.png";
-import { Results as ResultsType } from "../types/result-types";
+import {
+  CognitiveFunctions,
+  FourLetters,
+  Results as ResultsType,
+} from "../types/result-types";
 
 const positiveTraits = [
   {
@@ -104,11 +108,22 @@ const sampleResultLetters = [
   },
 ];
 
+type TypologyResult = {
+  name: string;
+  relationship: string;
+  comment: string | null;
+  results: {
+    mbti: string;
+    fourLetters: FourLetters;
+    cognitiveFunctions: any[][];
+    cognitiveFunctionsUnsorted: CognitiveFunctions;
+  };
+};
+
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const { userId } = context.query;
   let selfType: ResultsType | null | undefined = null;
-
-  console.log(userId);
+  let typology: TypologyResult[] | undefined | null | [] = [];
 
   // find user
   const userRes = await prisma.user.findFirst({
@@ -118,8 +133,6 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       selfType: true,
     },
   });
-
-  console.log(userRes);
 
   // get self type
   if (userRes?.selfType?.id) {
@@ -132,27 +145,52 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       },
     });
 
-    console.log(selfTypeRes);
-
     if (selfTypeRes?.results?.choices) {
       selfType = mbtiCalculator(selfTypeRes?.results?.choices);
     }
   }
 
   // get typology
+  if (userRes?.typology && userRes?.typology?.length > 0) {
+    const typologyRes = await prisma.typology.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        results: true,
+      },
+    });
+
+    // const typologyPromised = await JSON.parse(JSON.stringify(channelRes));
+
+    typology = typologyRes.map((typology) => {
+      const results = mbtiCalculator(typology.results[0].choices);
+
+      const typologyEntry = {
+        name: typology.name,
+        relationship: typology.relationship,
+        comment: typology.comment,
+        results,
+      };
+
+      return typologyEntry;
+    });
+  }
 
   return {
     props: {
       selfType,
+      typology,
     },
   };
 };
 
 type ProfilePageProps = {
   selfType: ResultsType | null | undefined;
+  typology: TypologyResult[] | undefined | null | [];
 };
 
-const ProfilePage = ({ selfType }: ProfilePageProps) => {
+const ProfilePage = ({ selfType, typology }: ProfilePageProps) => {
   const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
 
@@ -166,6 +204,7 @@ const ProfilePage = ({ selfType }: ProfilePageProps) => {
 
   useEffect(() => {
     console.log("self type", selfType);
+    console.log("typology", typology);
   }, []);
 
   return (
