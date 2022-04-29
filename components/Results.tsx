@@ -209,37 +209,53 @@ const Results = ({ indicator, result }: Props) => {
                 <div className="relative w-24 h-24 lg:w-28 lg:h-28">
                   <CircularProgressBar
                     color="#2563eb"
-                    finalValue={result.fourLetters["Extroverted"]}
+                    finalValue={
+                      result.mbti[0] === "E"
+                        ? result.fourLetters["Extroverted"]
+                        : result.fourLetters["Introverted"]
+                    }
                   />
                   <p className="text-center font-medium text-gray-500 pt-2">
-                    Extroverted
+                    {result.mbti[0] === "E" ? "Extroverted" : "Introverted"}
                   </p>
                 </div>
                 <div className="relative w-24 h-24 lg:w-28 lg:h-28">
                   <CircularProgressBar
                     color="#eab308"
-                    finalValue={result.fourLetters["Intuitive"]}
+                    finalValue={
+                      result.mbti[1] === "N"
+                        ? result.fourLetters["Intuitive"]
+                        : result.fourLetters["Sensor"]
+                    }
                   />
                   <p className="text-center font-medium text-gray-500 pt-2">
-                    Intuitive
+                    {result.mbti[1] === "N" ? "Intuitive" : "Sensor"}
                   </p>
                 </div>
                 <div className="relative w-24 h-24 lg:w-28 lg:h-28">
                   <CircularProgressBar
                     color="#dc2626"
-                    finalValue={result.fourLetters["Thinking"]}
+                    finalValue={
+                      result.mbti[2] === "T"
+                        ? result.fourLetters["Thinking"]
+                        : result.fourLetters["Feeling"]
+                    }
                   />
                   <p className="text-center font-medium text-gray-500 pt-2">
-                    Thinking
+                    {result.mbti[2] === "T" ? "Thinking" : "Feeling"}
                   </p>
                 </div>
                 <div className="relative w-24 h-24 lg:w-28 lg:h-28">
                   <CircularProgressBar
                     color="#059669"
-                    finalValue={result.fourLetters["Perceiving"]}
+                    finalValue={
+                      result.mbti[3] === "P"
+                        ? result.fourLetters["Perceiving"]
+                        : result.fourLetters["Judging"]
+                    }
                   />
                   <p className="text-center font-medium text-gray-500 pt-2">
-                    Perceiving
+                    {result.mbti[3] === "P" ? "Perceiving" : "Judging"}
                   </p>
                 </div>
               </>
@@ -249,11 +265,11 @@ const Results = ({ indicator, result }: Props) => {
           </div>
 
           <div className="flex justify-between py-12 w-full lg:max-w-[500px] lg:self-center">
-            {cognitiveFunctionResult.map((result, index) => (
+            {result?.cognitiveFunctions.map((result, index) => (
               <CognitiveFunctionBar
                 key={index}
-                name={result.name}
-                value={result.value}
+                name={result[0]}
+                value={result[1]}
                 color={index}
                 type="vertical"
               />
