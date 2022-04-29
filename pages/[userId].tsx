@@ -193,6 +193,9 @@ type ProfilePageProps = {
 const ProfilePage = ({ selfType, typology }: ProfilePageProps) => {
   const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
+  const [results, setResults] = useState<ResultsType | null | undefined>(
+    selfType
+  );
 
   const handleChange = (valueChoice: boolean) => {
     setSectionChoice(valueChoice);
@@ -269,7 +272,7 @@ const ProfilePage = ({ selfType, typology }: ProfilePageProps) => {
 
         {sectionChoice ? (
           <div className="md:hidden">
-            <Results indicator="profile-mobile" />
+            <Results indicator="profile-mobile" result={results} />
 
             <div className="mb-10">
               <Traits type={true} traits={positiveTraits} />
@@ -298,7 +301,7 @@ const ProfilePage = ({ selfType, typology }: ProfilePageProps) => {
         )}
 
         <div className="hidden md:block">
-          <Results indicator="profile-desktop" />
+          <Results indicator="profile-desktop" result={results} />
 
           <div className="flex justify-between">
             <div className="grow mr-8 lg:mr-12">

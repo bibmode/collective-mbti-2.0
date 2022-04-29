@@ -2,18 +2,21 @@ import React, { useEffect, useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { setInterval, setTimeout } from "timers/promises";
+import {
+  CognitiveFunctions,
+  FourLetters,
+  Results,
+} from "../types/result-types";
 import CircularProgressBar from "./CircularProgressBar";
 import CognitiveFunctionBar from "./CognitiveFunctionBar";
 
 const letterResult = [
   {
     name: "Extroverted",
-    finalValue: 75,
     color: "#2563eb",
   },
   {
     name: "Intuitive",
-    finalValue: 57,
     color: "#eab308",
   },
   {
@@ -65,9 +68,10 @@ const cognitiveFunctionResult = [
 
 type Props = {
   indicator: string;
+  result: Results | null | undefined;
 };
 
-const Results = ({ indicator }: Props) => {
+const Results = ({ indicator, result }: Props) => {
   const [resultOption, setResultOption] = useState(1);
 
   const optionStyle = (optionValue: number) => {
@@ -200,17 +204,48 @@ const Results = ({ indicator }: Props) => {
             lg:grid-cols-4 lg:grid-rows-1 lg:w-full lg:pb-12 lg:pt-4
           "
           >
-            {letterResult.map((result, index) => (
-              <div key={index} className="relative w-24 h-24 lg:w-28 lg:h-28">
-                <CircularProgressBar
-                  color={result.color}
-                  finalValue={result.finalValue}
-                />
-                <p className="text-center font-medium text-gray-500 pt-2">
-                  {result.name}
-                </p>
-              </div>
-            ))}
+            {result ? (
+              <>
+                <div className="relative w-24 h-24 lg:w-28 lg:h-28">
+                  <CircularProgressBar
+                    color="#2563eb"
+                    finalValue={result.fourLetters["Extroverted"]}
+                  />
+                  <p className="text-center font-medium text-gray-500 pt-2">
+                    Extroverted
+                  </p>
+                </div>
+                <div className="relative w-24 h-24 lg:w-28 lg:h-28">
+                  <CircularProgressBar
+                    color="#eab308"
+                    finalValue={result.fourLetters["Intuitive"]}
+                  />
+                  <p className="text-center font-medium text-gray-500 pt-2">
+                    Intuitive
+                  </p>
+                </div>
+                <div className="relative w-24 h-24 lg:w-28 lg:h-28">
+                  <CircularProgressBar
+                    color="#dc2626"
+                    finalValue={result.fourLetters["Thinking"]}
+                  />
+                  <p className="text-center font-medium text-gray-500 pt-2">
+                    Thinking
+                  </p>
+                </div>
+                <div className="relative w-24 h-24 lg:w-28 lg:h-28">
+                  <CircularProgressBar
+                    color="#059669"
+                    finalValue={result.fourLetters["Perceiving"]}
+                  />
+                  <p className="text-center font-medium text-gray-500 pt-2">
+                    Perceiving
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div>no data found</div>
+            )}
           </div>
 
           <div className="flex justify-between py-12 w-full lg:max-w-[500px] lg:self-center">
