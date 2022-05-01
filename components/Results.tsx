@@ -2,69 +2,15 @@ import React, { useEffect, useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { setInterval, setTimeout } from "timers/promises";
+import { descriptions } from "../data/descriptions";
 import {
   CognitiveFunctions,
+  Descriptions,
   FourLetters,
   Results,
 } from "../types/result-types";
 import CircularProgressBar from "./CircularProgressBar";
 import CognitiveFunctionBar from "./CognitiveFunctionBar";
-
-const letterResult = [
-  {
-    name: "Extroverted",
-    color: "#2563eb",
-  },
-  {
-    name: "Intuitive",
-    color: "#eab308",
-  },
-  {
-    name: "Thinking",
-    finalValue: 53,
-    color: "#dc2626",
-  },
-  {
-    name: "Perceiving",
-    finalValue: 68,
-    color: "#059669",
-  },
-];
-
-const cognitiveFunctionResult = [
-  {
-    name: "Ne",
-    value: 95,
-  },
-  {
-    name: "Ti",
-    value: 76,
-  },
-  {
-    name: "Fe",
-    value: 55,
-  },
-  {
-    name: "Se",
-    value: 52,
-  },
-  {
-    name: "Te",
-    value: 49,
-  },
-  {
-    name: "Fi",
-    value: 25,
-  },
-  {
-    name: "Ni",
-    value: 15,
-  },
-  {
-    name: "Si",
-    value: 5,
-  },
-];
 
 type Props = {
   indicator: string;
@@ -73,6 +19,9 @@ type Props = {
 
 const Results = ({ indicator, result }: Props) => {
   const [resultOption, setResultOption] = useState(1);
+  const typeDescription: Descriptions = descriptions.filter(
+    (description) => description.type === result?.mbti
+  )[0];
 
   const optionStyle = (optionValue: number) => {
     if (resultOption === optionValue) return "text-gray-600 bg-blue-50";
@@ -101,99 +50,95 @@ const Results = ({ indicator, result }: Props) => {
   return (
     <div className="flex flex-col md:flex-row-reverse md:justify-between lg:mb-8">
       {/* descriptions */}
-      <div className="rounded-2xl bg-white md:bg-white/90 drop-shadow-xl h-fit overflow-hidden md:max-w-xs">
-        <nav className="w-full flex text-[9px] text-gray-400 text-center font-semibold">
-          <input
-            className="hidden"
-            type="radio"
-            id={`result-${indicator}-1`}
-            name="resultOption"
-            onChange={() => setResultOption(1)}
-            defaultChecked
-          />
-          <label
-            htmlFor={`result-${indicator}-1`}
-            className={`uppercase py-4 pl-7 pr-2 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
-              1
-            )}`}
-          >
-            accumulative result
-          </label>
-
-          <input
-            className="hidden"
-            type="radio"
-            id={`result-${indicator}-2`}
-            name="resultOption"
-            onChange={() => setResultOption(2)}
-          />
-          <label
-            htmlFor={`result-${indicator}-2`}
-            className={`border-x border-gray-200 uppercase py-4 px-2 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
-              2
-            )}`}
-          >
-            according to friends
-          </label>
-
-          <input
-            className="hidden"
-            type="radio"
-            id={`result-${indicator}-3`}
-            name="resultOption"
-            onChange={() => setResultOption(3)}
-          />
-          <label
-            htmlFor={`result-${indicator}-3`}
-            className={`uppercase py-4 pl-2 pr-6 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
-              3
-            )}`}
-          >
-            self-tested result
-          </label>
-        </nav>
-
-        <div className="border-t border-gray-200 py-5 px-8">
-          <h2 className="text-center text-3xl font-semibold pt-2 pb-5">
-            {["e", "n", "t", "p"].map((letter, index) => (
-              <span key={index} className={`uppercase ${letterColor(index)}`}>
-                {letter}
-              </span>
-            ))}
-          </h2>
-          <p className="text-sm text-gray-500">
-            ENTPs are frequently described as clever, cerebrally and verbally
-            quick, enthusiastic, outgoing, innovative, flexible, and
-            resourceful. ENTPs’ minds move at a frenetic pace, contributing to
-            restlessness, anxiousness, and erratic sleeping patterns. Not only
-            are they constantly scanning for new possibilities, but also
-            generating new ideas and associations. Moreover, ENTPs enjoy sharing
-            and exchanging their ideas with others. -{" "}
-            <a
-              className="underline text-gray-600 font-semibold"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
+      {result && (
+        <div className="rounded-2xl bg-white md:bg-white/90 drop-shadow-xl h-fit overflow-hidden md:max-w-xs">
+          <nav className="w-full flex text-[9px] text-gray-400 text-center font-semibold">
+            <input
+              className="hidden"
+              type="radio"
+              id={`result-${indicator}-1`}
+              name="resultOption"
+              onChange={() => setResultOption(1)}
+              defaultChecked
+            />
+            <label
+              htmlFor={`result-${indicator}-1`}
+              className={`uppercase py-4 pl-7 pr-2 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
+                1
+              )}`}
             >
-              source
-            </a>
-          </p>
+              accumulative result
+            </label>
 
-          <ul className="text-sm flex flex-col font-semibold text-gray-600 underline ml-6 my-4 list-disc">
-            <li>
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                psychologyjunkie.com
-              </a>
-            </li>
+            <input
+              className="hidden"
+              type="radio"
+              id={`result-${indicator}-2`}
+              name="resultOption"
+              onChange={() => setResultOption(2)}
+            />
+            <label
+              htmlFor={`result-${indicator}-2`}
+              className={`border-x border-gray-200 uppercase py-4 px-2 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
+                2
+              )}`}
+            >
+              according to friends
+            </label>
 
-            <li>
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                16personalities.com
+            <input
+              className="hidden"
+              type="radio"
+              id={`result-${indicator}-3`}
+              name="resultOption"
+              onChange={() => setResultOption(3)}
+            />
+            <label
+              htmlFor={`result-${indicator}-3`}
+              className={`uppercase py-4 pl-2 pr-6 cursor-pointer hover:bg-blue-50 grow transition-all duration-300 ${optionStyle(
+                3
+              )}`}
+            >
+              self-tested result
+            </label>
+          </nav>
+
+          <div className="border-t border-gray-200 py-5 px-8">
+            <h2 className="text-center text-3xl font-semibold pt-2 pb-5">
+              {result.mbti.split("").map((letter, index) => (
+                <span key={index} className={`uppercase ${letterColor(index)}`}>
+                  {letter}
+                </span>
+              ))}
+            </h2>
+            <p className="text-sm text-gray-500">
+              {typeDescription.description} -{" "}
+              <a
+                className="underline text-gray-600 font-semibold"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                source
               </a>
-            </li>
-          </ul>
+            </p>
+
+            <ul className="text-sm flex flex-col font-semibold text-gray-600 underline ml-6 my-4 list-disc">
+              <li>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  {typeDescription.source1}
+                </a>
+              </li>
+
+              <li>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  {typeDescription.source2}
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* graphs */}
       <div className="flex flex-col md:w-full lg:grow lg:justify-center">

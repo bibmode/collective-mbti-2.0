@@ -30,6 +30,10 @@ type LayoutContextType = {
   setUserLoggedIn: React.Dispatch<React.SetStateAction<User | null>>;
   visitorResults: Results | null;
   setVisitorResults: React.Dispatch<React.SetStateAction<Results | null>>;
+  resultsToggle: Results | null | undefined;
+  setResultsToggle: React.Dispatch<
+    React.SetStateAction<Results | null | undefined>
+  >;
 };
 
 export const LayoutContext = createContext({} as LayoutContextType);
@@ -44,6 +48,9 @@ const LayoutContextProvider = ({ children }: Props) => {
   const [profileId, setProfileId] = useState<string>("");
   const [userLoggedIn, setUserLoggedIn] = useState<User | null>(null);
   const [visitorResults, setVisitorResults] = useState<Results | null>(null);
+  const [resultsToggle, setResultsToggle] = useState<
+    Results | null | undefined
+  >(null);
 
   const closeProfileMenu = () => {
     if (profileMenu) setProfileMenu(false);
@@ -78,6 +85,8 @@ const LayoutContextProvider = ({ children }: Props) => {
         setUserLoggedIn,
         visitorResults,
         setVisitorResults,
+        resultsToggle,
+        setResultsToggle,
       }}
     >
       <div className="bg-blue-50/20 relative">

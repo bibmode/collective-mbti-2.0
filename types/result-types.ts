@@ -26,3 +26,22 @@ export type Results = {
   cognitiveFunctions: any[][];
   cognitiveFunctionsUnsorted: CognitiveFunctions;
 };
+
+export type TypologyResult = {
+  name: string;
+  relationship: string;
+  comment: string | null;
+  results: {
+    mbti: string;
+    fourLetters: FourLetters;
+    cognitiveFunctions: any[][];
+    cognitiveFunctionsUnsorted: CognitiveFunctions;
+  };
+};
+
+export type Descriptions = {
+  type: string;
+  description: string;
+  source1: string;
+  source2: string;
+};

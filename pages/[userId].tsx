@@ -17,6 +17,7 @@ import {
   CognitiveFunctions,
   FourLetters,
   Results as ResultsType,
+  TypologyResult,
 } from "../types/result-types";
 
 const positiveTraits = [
@@ -108,22 +109,11 @@ const sampleResultLetters = [
   },
 ];
 
-type TypologyResult = {
-  name: string;
-  relationship: string;
-  comment: string | null;
-  results: {
-    mbti: string;
-    fourLetters: FourLetters;
-    cognitiveFunctions: any[][];
-    cognitiveFunctionsUnsorted: CognitiveFunctions;
-  };
-};
-
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const { userId } = context.query;
   let selfType: ResultsType | null | undefined = null;
   let accumulative: ResultsType | null | undefined = null;
+  let friendsType: ResultsType | null | undefined = null;
   let typology: TypologyResult[] | undefined | null | [] = [];
   let typologyRes = null,
     selfTypeRes = null;
@@ -180,6 +170,18 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
     });
   }
 
+  // get accumulative friends result
+  if (typologyRes) {
+    let allChoicesMade: any[] = [];
+    // typologyRes && console.log(typologyRes[0]?.results);
+    if (typologyRes)
+      allChoicesMade = typologyRes?.flatMap(
+        (result) => result.results[0].choices
+      );
+
+    friendsType = mbtiCalculator(allChoicesMade);
+  }
+
   // get accumulative result
   if (typologyRes || selfTypeRes) {
     let allChoicesMade: any[] = [];
@@ -197,6 +199,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   return {
     props: {
       selfType,
+      friendsType,
       typology,
       accumulative,
     },
@@ -205,20 +208,24 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
 type ProfilePageProps = {
   selfType: ResultsType | null | undefined;
+  friendsType: ResultsType | null | undefined;
   accumulative: ResultsType | null | undefined;
   typology: TypologyResult[] | undefined | null | [];
 };
 
 const ProfilePage = ({
   selfType,
+  friendsType,
   typology,
   accumulative,
 }: ProfilePageProps) => {
-  const { closeProfileMenu } = useContext(LayoutContext);
+  const { closeProfileMenu, resultsToggle, setResultsToggle } =
+    useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
-  const [results, setResults] = useState<ResultsType | null | undefined>(
-    accumulative
-  );
+
+  useEffect(() => {
+    if (accumulative) setResultsToggle(accumulative);
+  }, [accumulative]);
 
   const handleChange = (valueChoice: boolean) => {
     setSectionChoice(valueChoice);
@@ -230,6 +237,8 @@ const ProfilePage = ({
 
   useEffect(() => {
     console.log("self type", selfType);
+    console.log("friends type", friendsType);
+    console.log("accumulate", accumulative);
     console.log("typology", typology);
   }, []);
 
@@ -295,7 +304,7 @@ const ProfilePage = ({
 
         {sectionChoice ? (
           <div className="md:hidden">
-            <Results indicator="profile-mobile" result={results} />
+            <Results indicator="profile-mobile" result={resultsToggle} />
 
             <div className="mb-10">
               <Traits type={true} traits={positiveTraits} />
@@ -324,7 +333,7 @@ const ProfilePage = ({
         )}
 
         <div className="hidden md:block">
-          <Results indicator="profile-desktop" result={results} />
+          <Results indicator="profile-desktop" result={resultsToggle} />
 
           <div className="flex justify-between">
             <div className="grow mr-8 lg:mr-12">
