@@ -123,7 +123,10 @@ type TypologyResult = {
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const { userId } = context.query;
   let selfType: ResultsType | null | undefined = null;
+  let accumulative: ResultsType | null | undefined = null;
   let typology: TypologyResult[] | undefined | null | [] = [];
+  let typologyRes = null,
+    selfTypeRes = null;
 
   // find user
   const userRes = await prisma.user.findFirst({
@@ -136,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
   // get self type
   if (userRes?.selfType?.id) {
-    const selfTypeRes = await prisma.selfType.findFirst({
+    selfTypeRes = await prisma.selfType.findFirst({
       where: {
         userId: userId,
       },
@@ -152,7 +155,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
   // get typology
   if (userRes?.typology && userRes?.typology?.length > 0) {
-    const typologyRes = await prisma.typology.findMany({
+    typologyRes = await prisma.typology.findMany({
       where: {
         userId: userId,
       },
@@ -177,24 +180,44 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
     });
   }
 
+  // get accumulative result
+  if (typologyRes || selfTypeRes) {
+    let allChoicesMade: any[] = [];
+    // typologyRes && console.log(typologyRes[0]?.results);
+    if (typologyRes)
+      allChoicesMade = typologyRes?.map((result) => result.results[0].choices);
+
+    if (selfTypeRes) allChoicesMade.push(selfTypeRes.results?.choices);
+
+    allChoicesMade = allChoicesMade.flat();
+
+    accumulative = mbtiCalculator(allChoicesMade);
+  }
+
   return {
     props: {
       selfType,
       typology,
+      accumulative,
     },
   };
 };
 
 type ProfilePageProps = {
   selfType: ResultsType | null | undefined;
+  accumulative: ResultsType | null | undefined;
   typology: TypologyResult[] | undefined | null | [];
 };
 
-const ProfilePage = ({ selfType, typology }: ProfilePageProps) => {
+const ProfilePage = ({
+  selfType,
+  typology,
+  accumulative,
+}: ProfilePageProps) => {
   const { closeProfileMenu } = useContext(LayoutContext);
   const [sectionChoice, setSectionChoice] = useState(true);
   const [results, setResults] = useState<ResultsType | null | undefined>(
-    selfType
+    accumulative
   );
 
   const handleChange = (valueChoice: boolean) => {

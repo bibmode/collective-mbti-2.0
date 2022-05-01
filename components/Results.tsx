@@ -265,15 +265,19 @@ const Results = ({ indicator, result }: Props) => {
           </div>
 
           <div className="flex justify-between py-12 w-full lg:max-w-[500px] lg:self-center">
-            {result?.cognitiveFunctions.map((result, index) => (
-              <CognitiveFunctionBar
-                key={index}
-                name={result[0]}
-                value={result[1]}
-                color={index}
-                type="vertical"
-              />
-            ))}
+            {result ? (
+              result.cognitiveFunctions.map((result, index) => (
+                <CognitiveFunctionBar
+                  key={index}
+                  name={result[0]}
+                  value={result[1]}
+                  color={index}
+                  type="vertical"
+                />
+              ))
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       </div>

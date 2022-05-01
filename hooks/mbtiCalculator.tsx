@@ -53,15 +53,17 @@ class Calculator {
     let foundItems: number = 0;
 
     if (letter !== "J" && letter !== "P") {
-      foundItems = this.choices.filter((item) => item.includes(letter)).length;
+      foundItems =
+        this.choices.filter((item) => item.includes(letter)).length /
+        this.multiplier;
     } else if (letter === "J") {
-      foundItems = this.choices.filter(
-        (item) => item.includes("T") || item.includes("F")
-      ).length;
+      foundItems =
+        this.choices.filter((item) => item.includes("T") || item.includes("F"))
+          .length / this.multiplier;
     } else if (letter === "P") {
-      foundItems = this.choices.filter(
-        (item) => item.includes("N") || item.includes("S")
-      ).length;
+      foundItems =
+        this.choices.filter((item) => item.includes("N") || item.includes("S"))
+          .length / this.multiplier;
     }
 
     const value: number = Math.round((foundItems / dividend) * 100);
